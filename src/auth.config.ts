@@ -11,6 +11,7 @@ export const authConfig = {
         token.id = user.id;
         token.role = user.role;
         token.mustChangePassword = (user as unknown as Record<string, unknown>).mustChangePassword;
+        token.avatarUrl = (user as unknown as Record<string, unknown>).avatarUrl || '';
       }
       return token;
     },
@@ -19,6 +20,7 @@ export const authConfig = {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
         (session.user as unknown as Record<string, unknown>).mustChangePassword = token.mustChangePassword;
+        (session.user as unknown as Record<string, unknown>).avatarUrl = token.avatarUrl || '';
       }
       return session;
     },

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { UnitForm } from './UnitForm';
 import { Plus, Edit2, Trash2, Box } from 'lucide-react';
-import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { ConfirmModal } from '@/components/layout/ConfirmModal';
 
 interface Unit {
   id: number;
@@ -14,7 +14,7 @@ interface Unit {
   woJono: string | null;
   zone: string | null;
   inspectionStart: string | null;
-  isActive: number;
+  isActive: boolean;
 }
 
 interface UnitListProps {

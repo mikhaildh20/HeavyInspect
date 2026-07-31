@@ -66,7 +66,7 @@ export async function DELETE(
   }
 
   await db.update(checklistParameters)
-    .set({ deletedAt: new Date().toISOString() })
+    .set({ deletedAt: new Date() })
     .where(eq(checklistParameters.id, parseInt(id)));
 
   return NextResponse.json({ success: true });

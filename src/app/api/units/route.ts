@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     unitCode,
     modelName,
     lastSmr: lastSmr || 0,
-    isActive: 1,
+    isActive: true,
   }).returning();
 
   return NextResponse.json(newUnit[0]);

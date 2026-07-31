@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     woJono: woJono || '',
     zone: zone || '',
     inspectionStart: inspectionStart || '',
-    isActive: isActive ?? 1,
+    isActive: isActive ?? true,
   }).returning();
 
   return NextResponse.json(newUnit[0]);

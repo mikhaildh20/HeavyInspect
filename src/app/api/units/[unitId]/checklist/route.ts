@@ -30,7 +30,7 @@ export async function GET(
     .where(and(
       eq(unitChecklistItems.unitId, parseInt(unitId)),
       isNull(checklistParameters.deletedAt),
-      eq(unitChecklistItems.isActive, 1),
+      eq(unitChecklistItems.isActive, true),
     ))
     .orderBy(asc(unitChecklistItems.sortOrder));
 
@@ -99,7 +99,7 @@ export async function DELETE(request: Request) {
   }
 
   await db.update(unitChecklistItems)
-    .set({ isActive: 0 })
+    .set({ isActive: false })
     .where(eq(unitChecklistItems.id, id));
 
   return NextResponse.json({ success: true });

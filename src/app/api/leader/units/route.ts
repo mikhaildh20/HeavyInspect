@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   const allUnits = await db.select().from(units).where(
-    and(eq(units.isActive, 1), isNull(units.deletedAt))
+    and(eq(units.isActive, true), isNull(units.deletedAt))
   );
 
   return NextResponse.json(allUnits);
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     woJono: woJono || '',
     zone: zone || '',
     inspectionStart: inspectionStart || '',
-    isActive: isActive ?? 1,
+    isActive: isActive ?? true,
   }).returning();
 
   return NextResponse.json(newUnit[0]);

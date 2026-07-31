@@ -35,8 +35,8 @@ interface ReportDetailProps {
     gpsLongitude: number | null;
     gpsAccuracy: number | null;
     gpsTimestamp: string | null;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date | string;
+    updatedAt: Date | string;
   };
   unit: {
     unitCode: string;
@@ -112,7 +112,7 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
     });
   };
 
-  const formatDateTime = (dateStr: string) => {
+  const formatDateTime = (dateStr: Date | string) => {
     return new Date(dateStr).toLocaleString('id-ID', {
       day: 'numeric',
       month: 'long',
@@ -128,7 +128,7 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
       <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-white">{unit?.unitCode || 'Unknown Unit'}</h2>
+            <h2 className="text-2xl font-bold text-white">{unit?.unitCode || 'Unit Tidak Diketahui'}</h2>
             <p className="text-gray-400">{unit?.modelName}</p>
           </div>
           {getStatusBadge()}

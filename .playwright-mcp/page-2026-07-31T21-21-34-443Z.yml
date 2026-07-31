@@ -1,0 +1,62 @@
+- generic [active] [ref=f3e1]:
+  - generic [ref=f3e2]:
+    - main [ref=f3e35]:
+      - generic [ref=f3e36]:
+        - generic [ref=f3e37]:
+          - link [ref=f3e38] [cursor=pointer]:
+            - /url: /profile
+          - generic [ref=f3e43]:
+            - heading "Welcome, Siti (Supervisor)" [level=1] [ref=f3e44]
+            - paragraph [ref=f3e45]: Dosen Dashboard
+        - button [ref=f3e48]
+      - generic [ref=f3e52]:
+        - generic [ref=f3e53]:
+          - heading "Pending Approval" [level=2] [ref=f3e54]
+          - paragraph [ref=f3e59]: No reports pending your approval.
+        - link "View All Reports" [ref=f3e60] [cursor=pointer]:
+          - /url: /reports
+      - generic [ref=f3e64]:
+        - generic [ref=f3e65]:
+          - generic [ref=f3e70]:
+            - paragraph [ref=f3e71]: "0"
+            - paragraph [ref=f3e72]: Total Reports
+          - generic [ref=f3e78]:
+            - paragraph [ref=f3e79]: "0"
+            - paragraph [ref=f3e80]: Approved
+          - generic [ref=f3e86]:
+            - paragraph [ref=f3e87]: "0"
+            - paragraph [ref=f3e88]: Pending
+          - generic [ref=f3e95]:
+            - paragraph [ref=f3e96]: "0"
+            - paragraph [ref=f3e97]: Rejected
+        - generic [ref=f3e98]:
+          - heading "Unit Status" [level=2] [ref=f3e99]
+          - generic [ref=f3e104]:
+            - generic [ref=f3e105]:
+              - generic [ref=f3e106]:
+                - paragraph [ref=f3e107]: "0101"
+                - paragraph [ref=f3e108]: Komatsu-01
+              - generic [ref=f3e109]:
+                - paragraph [ref=f3e110]: "0"
+                - paragraph [ref=f3e111]: Reports
+            - generic [ref=f3e112]:
+              - generic [ref=f3e113]:
+                - paragraph [ref=f3e114]: "2717"
+                - paragraph [ref=f3e115]: Komatsu PC 200-8
+              - generic [ref=f3e116]:
+                - paragraph [ref=f3e117]: "0"
+                - paragraph [ref=f3e118]: Reports
+        - generic [ref=f3e119]:
+          - heading "Recent Activity" [level=2] [ref=f3e120]
+          - paragraph [ref=f3e125]: No recent inspection activity.
+    - navigation [ref=f3e126]:
+      - generic [ref=f3e127]:
+        - link "Home" [ref=f3e128] [cursor=pointer]:
+          - /url: /dashboard
+        - link "Reports" [ref=f3e133] [cursor=pointer]:
+          - /url: /reports
+        - link "Profile" [ref=f3e136] [cursor=pointer]:
+          - /url: /profile
+        - button "Logout" [ref=f3e141]
+  - button "Open Next.js Dev Tools" [ref=f3e30] [cursor=pointer]
+  - alert [ref=f3e34]

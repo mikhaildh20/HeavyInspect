@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     category: legacyCategory,
     description,
     sortOrder: sortOrder ?? 0,
-    isActive: isActive ?? 1,
+    isActive: isActive ?? true,
   }).returning();
 
   return NextResponse.json(newParam[0]);

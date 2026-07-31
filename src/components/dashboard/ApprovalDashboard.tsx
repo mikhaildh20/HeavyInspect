@@ -50,8 +50,8 @@ export async function ApprovalDashboard({ role }: ApprovalDashboardProps) {
 
   const queue = reportsList.map(r => ({
     id: r.id,
-    unit: r.unitCode || 'Unknown',
-    mechanic: r.operatorName || 'Unknown',
+    unit: r.unitCode || 'Tidak Diketahui',
+    mechanic: r.operatorName || 'Tidak Diketahui',
     status: r.status,
     time: new Date(r.reportDate).toLocaleDateString('en-ID'),
   }));
@@ -61,7 +61,7 @@ export async function ApprovalDashboard({ role }: ApprovalDashboardProps) {
       <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-md">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Clock className="text-primary" />
-          Pending Approval
+          Menunggu Persetujuan
         </h2>
         
         {queue.length > 0 ? (
@@ -78,7 +78,7 @@ export async function ApprovalDashboard({ role }: ApprovalDashboardProps) {
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-400">Inspector: {item.mechanic} - {item.time}</p>
+                  <p className="text-sm text-gray-400">Inspektor: {item.mechanic} - {item.time}</p>
                 </div>
                 
                 <Link href={`/review/${encryptId(item.id)}`} className="btn-glove bg-gray-700 hover:bg-gray-600 text-white px-6 w-full sm:w-auto border border-gray-600">
@@ -89,14 +89,14 @@ export async function ApprovalDashboard({ role }: ApprovalDashboardProps) {
           </div>
         ) : (
           <div className="text-center py-8 text-gray-400">
-            <p>No reports pending your approval.</p>
+            <p>Belum ada laporan menunggu persetujuan Anda.</p>
           </div>
         )}
       </div>
 
       <Link href="/reports" className="flex items-center justify-center gap-2 w-full btn-glove bg-gray-700 text-white border border-gray-600 hover:bg-gray-600">
         <FileText size={20} />
-        View All Reports
+        Lihat Semua Laporan
       </Link>
     </div>
   );

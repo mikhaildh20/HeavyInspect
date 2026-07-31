@@ -12,6 +12,10 @@ export default auth((req) => {
 
   if (isAuthPage) {
     if (isLoggedIn) {
+      const role = (req.auth?.user as unknown as Record<string, unknown>)?.role;
+      if (role === 'admin') {
+        return NextResponse.redirect(new URL('/admin', req.nextUrl));
+      }
       return NextResponse.redirect(new URL('/dashboard', req.nextUrl));
     }
     return NextResponse.next();
@@ -30,6 +34,10 @@ export default auth((req) => {
   }
 
   if (!mustChangePassword && isChangePasswordPage) {
+    const role = (req.auth?.user as unknown as Record<string, unknown>)?.role;
+    if (role === 'admin') {
+      return NextResponse.redirect(new URL('/admin', req.nextUrl));
+    }
     return NextResponse.redirect(new URL('/dashboard', req.nextUrl));
   }
 

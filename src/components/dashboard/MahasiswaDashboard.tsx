@@ -30,18 +30,18 @@ export async function MahasiswaDashboard() {
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
           <p className="text-2xl font-bold text-white">{recentReports.length}</p>
-          <p className="text-xs text-gray-400">Total Reports</p>
+          <p className="text-xs text-gray-400">Total Laporan</p>
         </div>
         <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
           <p className="text-2xl font-bold text-yellow-400">{pendingCount}</p>
-          <p className="text-xs text-gray-400">Pending Review</p>
+          <p className="text-xs text-gray-400">Menunggu Review</p>
         </div>
       </div>
 
       <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-md">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <CalendarClock className="text-primary" />
-          Recent Reports
+          Laporan Terkini
         </h2>
         
         {recentReports.length > 0 ? (
@@ -53,7 +53,7 @@ export async function MahasiswaDashboard() {
                 className="block bg-gray-900 rounded-lg p-4 flex items-center justify-between border border-gray-700 hover:border-gray-500 transition-colors"
               >
                 <div>
-                  <p className="font-medium text-lg">{report.unitCode || 'Unknown Unit'}</p>
+                  <p className="font-medium text-lg">{report.unitCode || 'Unit Tidak Diketahui'}</p>
                   <p className="text-sm text-gray-400">{new Date(report.reportDate).toLocaleDateString('en-ID')}</p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -64,7 +64,11 @@ export async function MahasiswaDashboard() {
                     report.status === 'PendingSupervisor' ? 'bg-yellow-900/50 text-yellow-400 border border-yellow-700' :
                     'bg-gray-700 text-gray-300'
                   }`}>
-                    {report.status}
+                    {report.status === 'Approved' ? 'Disetujui' :
+                     report.status === 'Rejected' ? 'Ditolak' :
+                     report.status === 'Submitted' ? 'Menunggu Instruktur' :
+                     report.status === 'PendingSupervisor' ? 'Menunggu Dosen' :
+                     report.status}
                   </span>
                   <ArrowRight size={16} className="text-gray-500" />
                 </div>
@@ -73,7 +77,7 @@ export async function MahasiswaDashboard() {
           </div>
         ) : (
           <div className="text-center py-8 text-gray-400">
-            <p>No inspection reports yet.</p>
+            <p>Belum ada laporan inspeksi.</p>
           </div>
         )}
       </div>
@@ -81,11 +85,11 @@ export async function MahasiswaDashboard() {
       <div className="flex gap-4">
         <Link href="/scan" className="flex-1 btn-primary shadow-lg shadow-primary/20">
           <CalendarClock className="mr-2" size={20} />
-          New Inspection
+          Inspeksi Baru
         </Link>
         <Link href="/reports" className="flex-1 btn-glove bg-gray-700 text-white border border-gray-600 hover:bg-gray-600">
           <FileText className="mr-2" size={20} />
-          View All Reports
+          Lihat Semua Laporan
         </Link>
       </div>
     </div>

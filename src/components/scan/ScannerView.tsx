@@ -74,22 +74,22 @@ export function ScannerView() {
       );
     } catch (err) {
       console.error("Scanner error:", err);
-        setError("Failed to access camera. Please ensure camera permissions are granted.");
+        setError("Gagal mengakses kamera. Pastikan izin kamera telah diberikan.");
       setIsScanning(false);
     }
   };
 
   const stopScanner = async () => {
-    if (scannerRef.current && isScanning) {
-      try {
-        await scannerRef.current.stop();
-        scannerRef.current.clear();
-      } catch (err) {
-        console.error("Error stopping scanner:", err);
-      }
-      scannerRef.current = null;
-      setIsScanning(false);
-    }
+    const scanner = scannerRef.current;
+    if (!scanner) return;
+    scannerRef.current = null;
+    setIsScanning(false);
+    try {
+      await scanner.stop();
+    } catch { /* already stopped */ }
+    try {
+      scanner.clear();
+    } catch { /* already removed */ }
   };
 
   // Cleanup on unmount
@@ -114,7 +114,7 @@ export function ScannerView() {
     <div className="w-full h-full flex flex-col items-center justify-between p-6">
       <div className="text-center mt-12 z-10">
         <h1 className="text-2xl font-bold text-white mb-2">Scan Unit</h1>
-        <p className="text-gray-300">Point the camera at the QR code on the unit chassis</p>
+        <p className="text-gray-300">Arahkan kamera ke QR code pada chassis unit</p>
       </div>
 
       {!isManual ? (
@@ -150,7 +150,7 @@ export function ScannerView() {
             <div className="absolute inset-0 bg-gray-800/80 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center z-40">
               <Camera size={48} className="text-primary opacity-50 mb-4 animate-pulse" />
               <p className="text-sm text-gray-400 px-8 text-center">
-                Starting camera...
+                Memulai kamera...
               </p>
             </div>
           )}
@@ -160,7 +160,7 @@ export function ScannerView() {
           <form onSubmit={handleManualSubmit} className="space-y-4">
             <div>
               <label htmlFor="unitId" className="block text-sm font-medium text-gray-300 mb-2">
-                Unit ID
+                Kode Unit
               </label>
               <input
                 id="unitId"
@@ -173,7 +173,7 @@ export function ScannerView() {
               />
             </div>
               <button type="submit" className="btn-primary w-full">
-                Continue to P2H Form
+                Lanjut ke Form P2H
               </button>
           </form>
         </div>
@@ -210,7 +210,7 @@ export function ScannerView() {
             }} 
             className="btn-glove bg-gray-800 text-white w-full border border-gray-600"
           >
-            Back to Scanner
+            Kembali ke Scanner
           </button>
         )}
       </div>

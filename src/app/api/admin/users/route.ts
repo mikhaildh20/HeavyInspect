@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   const actualPassword = password || generatePassword();
   const passwordHash = await bcrypt.hash(actualPassword, 12);
-  const mustChangePassword = password ? 0 : 1;
+  const mustChangePassword = password ? false : true;
 
   const newUser = await db.insert(users).values({
     username,

@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { Plus, Trash2, GripVertical, ClipboardCheck, Save, Loader2, X } from 'lucide-react';
-import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { ConfirmModal } from '@/components/layout/ConfirmModal';
 
 type AssignedItem = {
   id: number;
   unitId: number;
   parameterId: number;
   sortOrder: number;
-  isActive: number;
+  isActive: boolean;
   category: string;
   description: string;
 };
@@ -18,7 +18,7 @@ type Parameter = {
   id: number;
   category: string;
   description: string;
-  isActive: number;
+  isActive: boolean;
 };
 
 interface UnitChecklistManagerProps {
@@ -73,7 +73,7 @@ export function UnitChecklistManager({
       });
       if (!res.ok) {
         const data = await res.json();
-        setToast({ message: data.error || 'Failed to add', type: 'error' });
+        setToast({ message: data.error || 'Gagal menambahkan', type: 'error' });
         setTimeout(() => setToast(null), 3000);
         return;
       }
@@ -86,7 +86,7 @@ export function UnitChecklistManager({
             unitId,
             parameterId: selectedParamId,
             sortOrder: assigned.length,
-            isActive: 1,
+            isActive: true,
             category: param.category,
             description: param.description,
           },
@@ -95,7 +95,7 @@ export function UnitChecklistManager({
       setShowAddModal(false);
       setSelectedParamId(null);
     } catch {
-      setToast({ message: 'Network error', type: 'error' });
+      setToast({ message: 'Gagal terhubung ke server', type: 'error' });
       setTimeout(() => setToast(null), 3000);
     } finally {
       setSaving(false);
@@ -120,7 +120,7 @@ export function UnitChecklistManager({
             setAssigned(assigned.filter((a) => a.id !== itemId));
           }
         } catch {
-          setToast({ message: 'Network error', type: 'error' });
+          setToast({ message: 'Gagal terhubung ke server', type: 'error' });
           setTimeout(() => setToast(null), 3000);
         } finally {
           setConfirmState(prev => ({ ...prev, open: false, loading: false }));

@@ -19,34 +19,34 @@ export function BottomNav({ role }: BottomNavProps) {
   switch (role) {
     case 'operator':
       navItems = [
-        { label: 'Home', href: '/dashboard', icon: Home },
+        { label: 'Beranda', href: '/dashboard', icon: Home },
         { label: 'Scan', href: '/scan', icon: ScanLine },
-        { label: 'Reports', href: '/reports', icon: History },
-        { label: 'Profile', href: '/profile', icon: User },
+        { label: 'Laporan', href: '/reports', icon: History },
+        { label: 'Profil', href: '/profile', icon: User },
       ];
       break;
     case 'leader':
       navItems = [
-        { label: 'Home', href: '/dashboard', icon: Home },
-        { label: 'Reports', href: '/reports', icon: History },
-        { label: 'Units', href: '/units', icon: Truck },
-        { label: 'Profile', href: '/profile', icon: User },
+        { label: 'Beranda', href: '/dashboard', icon: Home },
+        { label: 'Laporan', href: '/reports', icon: History },
+        { label: 'Unit', href: '/units', icon: Truck },
+        { label: 'Profil', href: '/profile', icon: User },
       ];
       break;
     case 'supervisor':
       navItems = [
-        { label: 'Home', href: '/dashboard', icon: Home },
-        { label: 'Reports', href: '/reports', icon: BarChart2 },
-        { label: 'Profile', href: '/profile', icon: User },
+        { label: 'Beranda', href: '/dashboard', icon: Home },
+        { label: 'Laporan', href: '/reports', icon: BarChart2 },
+        { label: 'Profil', href: '/profile', icon: User },
       ];
       break;
     case 'admin':
       navItems = [
-        { label: 'Home', href: '/dashboard', icon: Home },
-        { label: 'Users', href: '/admin/users', icon: ClipboardList },
-        { label: 'Units', href: '/admin/units', icon: Truck },
+        { label: 'Beranda', href: '/dashboard', icon: Home },
+        { label: 'Pengguna', href: '/admin/users', icon: ClipboardList },
+        { label: 'Unit', href: '/admin/units', icon: Truck },
         { label: 'Master', href: '/admin/checklist', icon: ClipboardList },
-        { label: 'Profile', href: '/profile', icon: User },
+        { label: 'Profil', href: '/profile', icon: User },
       ];
       break;
     default:
@@ -78,12 +78,11 @@ export function BottomNav({ role }: BottomNavProps) {
             className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors text-gray-400 hover:text-red-400"
           >
             <LogOut size={24} strokeWidth={2} />
-            <span className="text-[10px] font-medium tracking-wide">Logout</span>
+            <span className="text-[10px] font-medium tracking-wide">Keluar</span>
           </button>
         </div>
       </nav>
 
-      {/* Logout Confirmation Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="mx-4 w-full max-w-sm rounded-2xl bg-gray-800 border border-gray-700 p-6 shadow-2xl">
@@ -91,22 +90,22 @@ export function BottomNav({ role }: BottomNavProps) {
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10 mb-4">
                 <LogOut className="h-7 w-7 text-red-500" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Logout?</h3>
+              <h3 className="text-lg font-semibold text-white mb-2">Keluar?</h3>
               <p className="text-sm text-gray-400 mb-6">
-                You will be logged out and redirected to the login page.
+                Anda akan logout dan diarahkan ke halaman login.
               </p>
               <div className="flex gap-3 w-full">
                 <button
                   onClick={() => setShowLogoutModal(false)}
                   className="flex-1 rounded-lg border border-gray-600 bg-gray-700 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-600"
                 >
-                  Cancel
+                  Batal
                 </button>
                 <button
                   onClick={() => signOut({ callbackUrl: '/login' })}
                   className="flex-1 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700"
                 >
-                  Logout
+                  Keluar
                 </button>
               </div>
             </div>

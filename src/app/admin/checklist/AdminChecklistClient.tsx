@@ -8,7 +8,7 @@ interface ChecklistCategory {
   letter: string;
   name: string;
   sortOrder: number;
-  isActive: number;
+  isActive: boolean;
 }
 
 interface ChecklistParameter {
@@ -17,7 +17,7 @@ interface ChecklistParameter {
   category: string;
   description: string;
   sortOrder: number;
-  isActive: number;
+  isActive: boolean;
 }
 
 export function AdminChecklistClient() {

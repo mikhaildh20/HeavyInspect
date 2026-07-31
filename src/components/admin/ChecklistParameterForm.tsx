@@ -7,7 +7,7 @@ interface ChecklistParameter {
   id?: number;
   category: string;
   description: string;
-  isActive: number;
+  isActive: boolean;
 }
 
 interface ChecklistParameterFormProps {
@@ -94,12 +94,12 @@ export function ChecklistParameterForm({ parameter, onSave, onCancel }: Checklis
         <div>
           <label className="block text-sm font-medium text-gray-400 mb-2">Status</label>
           <select
-            value={formData.isActive}
-            onChange={(e) => setFormData({ ...formData, isActive: parseInt(e.target.value) })}
+            value={formData.isActive ? 'true' : 'false'}
+            onChange={(e) => setFormData({ ...formData, isActive: e.target.value === 'true' })}
             className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
           >
-            <option value={1}>Aktif</option>
-            <option value={0}>Nonaktif</option>
+            <option value="true">Aktif</option>
+            <option value="false">Nonaktif</option>
           </select>
         </div>
 

@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Users, Box, ClipboardList, ArrowLeft } from 'lucide-react';
+import { Users, Box, ClipboardList, LayoutDashboard, ArrowLeft } from 'lucide-react';
 
 const adminNav = [
-  { href: '/admin/users', label: 'Users', icon: Users },
-  { href: '/admin/units', label: 'Units', icon: Box },
+  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/users', label: 'User', icon: Users },
+  { href: '/admin/units', label: 'Unit', icon: Box },
   { href: '/admin/checklist', label: 'Master Sheet', icon: ClipboardList },
 ];
 
@@ -19,7 +20,7 @@ export function AdminNav() {
         <ArrowLeft className="text-white" size={20} />
       </Link>
       {adminNav.map((item) => {
-        const isActive = pathname.startsWith(item.href);
+        const isActive = item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
         const Icon = item.icon;
         return (
           <Link

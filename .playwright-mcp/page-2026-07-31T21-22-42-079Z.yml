@@ -1,0 +1,27 @@
+- generic [active] [ref=f4e1]:
+  - main [ref=f4e3]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e5]:
+        - img "HeavyInspect Logo" [ref=f4e6]
+        - generic [ref=f4e7]:
+          - heading "HeavyInspect" [level=1] [ref=f4e8]
+          - paragraph [ref=f4e9]: P2H Digital Inspection System
+      - generic [ref=f4e12]:
+        - generic [ref=f4e13]:
+          - heading "Welcome Back" [level=1] [ref=f4e14]
+          - paragraph [ref=f4e15]: Sign in to your account
+        - generic [ref=f4e16]:
+          - generic [ref=f4e17]:
+            - generic [ref=f4e18]: Username
+            - textbox "Username" [ref=f4e19]:
+              - /placeholder: Enter your username
+              - text: operator1
+          - generic [ref=f4e20]:
+            - generic [ref=f4e21]: Password
+            - textbox "Password" [ref=f4e22]:
+              - /placeholder: Enter password
+              - text: password123
+        - button "Sign In" [ref=f4e23]
+      - paragraph [ref=f4e24]: TRPAB Heavy Equipment Division
+  - button "Open Next.js Dev Tools" [ref=f4e30] [cursor=pointer]
+  - alert [ref=f4e34]

@@ -1,0 +1,46 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - main [ref=f1e3]:
+      - generic [ref=f1e4]:
+        - generic [ref=f1e5]:
+          - link [ref=f1e6] [cursor=pointer]:
+            - /url: /profile
+          - generic [ref=f1e11]:
+            - heading "Welcome, Budi (Operator)" [level=1] [ref=f1e12]
+            - paragraph [ref=f1e13]: Mahasiswa Dashboard
+        - button [ref=f1e16]
+      - generic [ref=f1e20]:
+        - generic [ref=f1e21]:
+          - generic [ref=f1e22]:
+            - paragraph [ref=f1e23]: "0"
+            - paragraph [ref=f1e24]: Total Reports
+          - generic [ref=f1e25]:
+            - paragraph [ref=f1e26]: "0"
+            - paragraph [ref=f1e27]: Pending Review
+        - generic [ref=f1e28]:
+          - heading "Recent Reports" [level=2] [ref=f1e29]
+          - paragraph [ref=f1e35]: No inspection reports yet.
+        - generic [ref=f1e36]:
+          - link "New Inspection" [ref=f1e37] [cursor=pointer]:
+            - /url: /scan
+          - link "View All Reports" [ref=f1e42] [cursor=pointer]:
+            - /url: /reports
+    - navigation [ref=f1e46]:
+      - generic [ref=f1e47]:
+        - link "Home" [ref=f1e48] [cursor=pointer]:
+          - /url: /dashboard
+        - link "Scan" [ref=f1e53] [cursor=pointer]:
+          - /url: /scan
+        - link "Reports" [ref=f1e60] [cursor=pointer]:
+          - /url: /reports
+        - link "Profile" [ref=f1e66] [cursor=pointer]:
+          - /url: /profile
+        - button "Logout" [active] [ref=f1e71]
+    - generic [ref=f1e88]:
+      - heading "Logout?" [level=3] [ref=f1e93]
+      - paragraph [ref=f1e94]: You will be logged out and redirected to the login page.
+      - generic [ref=f1e95]:
+        - button "Cancel" [ref=f1e96]
+        - button "Logout" [ref=f1e97]
+  - button "Open Next.js Dev Tools" [ref=f1e81] [cursor=pointer]
+  - alert [ref=f1e85]

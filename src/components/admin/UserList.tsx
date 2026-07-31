@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { UserForm } from './UserForm';
 import { Plus, Edit2, Trash2, HardHat, BookOpen, Shield, Users, KeyRound, Copy, Check, Upload, Download } from 'lucide-react';
-import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { ConfirmModal } from '@/components/layout/ConfirmModal';
 import * as XLSX from 'xlsx';
 
 interface User {
@@ -194,7 +194,7 @@ export function UserList({ users: initialUsers }: UserListProps) {
   const handleDownloadTemplate = () => {
     const wb = XLSX.utils.book_new();
     const wsData = [
-      ['Username', 'Full Name', 'Role'],
+      ['Username', 'Nama Lengkap', 'Role'],
       ['operator1', 'Contoh Operator', 'operator'],
     ];
     const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -238,6 +238,13 @@ export function UserList({ users: initialUsers }: UserListProps) {
           >
             <Download size={18} />
             Template
+          </button>
+          <button
+            onClick={() => window.open('/api/admin/users/export', '_blank')}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-lg font-medium hover:bg-gray-600 transition-colors"
+          >
+            <Download size={18} />
+            Export Belum Ganti PW
           </button>
           <button
             onClick={() => fileInputRef.current?.click()}

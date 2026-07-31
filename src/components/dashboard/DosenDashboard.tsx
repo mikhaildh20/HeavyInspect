@@ -38,10 +38,10 @@ export async function DosenDashboard() {
   .orderBy(desc(count(p2hReports.id)));
 
   const stats = [
-    { label: 'Total Reports', value: totalReports[0]?.value || 0, icon: BarChart3, color: 'text-blue-400' },
-    { label: 'Approved', value: approvedReports[0]?.value || 0, icon: CheckCircle, color: 'text-green-400' },
-    { label: 'Pending', value: pendingReports[0]?.value || 0, icon: Clock, color: 'text-yellow-400' },
-    { label: 'Rejected', value: rejectedReports[0]?.value || 0, icon: XCircle, color: 'text-red-400' },
+    { label: 'Total Laporan', value: totalReports[0]?.value || 0, icon: BarChart3, color: 'text-blue-400' },
+    { label: 'Disetujui', value: approvedReports[0]?.value || 0, icon: CheckCircle, color: 'text-green-400' },
+    { label: 'Menunggu', value: pendingReports[0]?.value || 0, icon: Clock, color: 'text-yellow-400' },
+    { label: 'Ditolak', value: rejectedReports[0]?.value || 0, icon: XCircle, color: 'text-red-400' },
   ];
 
   return (
@@ -63,7 +63,7 @@ export async function DosenDashboard() {
       <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Building2 className="text-primary" />
-          Unit Status
+          Status Unit
         </h2>
         {unitStats.length > 0 ? (
           <div className="space-y-3">
@@ -75,14 +75,14 @@ export async function DosenDashboard() {
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-bold text-primary">{unit.reportCount}</p>
-                  <p className="text-xs text-gray-400">Reports</p>
+                  <p className="text-xs text-gray-400">Laporan</p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-8 text-gray-400">
-            <p>No units registered yet.</p>
+            <p>Belum ada unit terdaftar.</p>
           </div>
         )}
       </div>
@@ -90,14 +90,14 @@ export async function DosenDashboard() {
       <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Clock className="text-primary" />
-          Recent Activity
+          Aktivitas Terkini
         </h2>
         {recentReports.length > 0 ? (
           <div className="space-y-3">
             {recentReports.map((report) => (
               <div key={report.id} className="bg-gray-900 rounded-lg p-4 border border-gray-700 flex justify-between items-center">
                 <div>
-                  <p className="font-medium">{report.unitCode || 'Unknown'}</p>
+                  <p className="font-medium">{report.unitCode || 'Tidak Diketahui'}</p>
                   <p className="text-sm text-gray-400">{report.operatorName} - {new Date(report.reportDate).toLocaleDateString('en-ID')}</p>
                 </div>
                 <span className={`text-xs px-3 py-1 rounded-full font-medium ${
@@ -105,17 +105,17 @@ export async function DosenDashboard() {
                   report.status === 'Rejected' ? 'bg-red-900/50 text-red-400 border border-red-700' :
                   'bg-yellow-900/50 text-yellow-400 border border-yellow-700'
                 }`}>
-                  {report.status === 'Approved' ? 'Approved' :
-                   report.status === 'Rejected' ? 'Rejected' :
-                   report.status === 'Submitted' ? 'Pending Leader' :
-                   'Pending Supervisor'}
+                  {report.status === 'Approved' ? 'Disetujui' :
+                   report.status === 'Rejected' ? 'Ditolak' :
+                   report.status === 'Submitted' ? 'Menunggu Instruktur' :
+                   'Menunggu Dosen'}
                 </span>
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-8 text-gray-400">
-            <p>No recent inspection activity.</p>
+            <p>Belum ada aktivitas inspeksi terkini.</p>
           </div>
         )}
       </div>

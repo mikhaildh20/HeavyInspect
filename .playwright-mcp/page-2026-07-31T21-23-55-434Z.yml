@@ -1,0 +1,66 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e3]:
+    - banner [ref=f5e4]:
+      - generic [ref=f5e6]:
+        - heading "Admin Panel" [level=1] [ref=f5e7]
+        - navigation [ref=f5e8]:
+          - link [ref=f5e9] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Dashboard" [ref=f5e12] [cursor=pointer]:
+            - /url: /admin
+          - link "Users" [ref=f5e18] [cursor=pointer]:
+            - /url: /admin/users
+          - link "Units" [ref=f5e24] [cursor=pointer]:
+            - /url: /admin/units
+          - link "Master Sheet" [ref=f5e28] [cursor=pointer]:
+            - /url: /admin/checklist
+    - main [ref=f5e32]:
+      - generic [ref=f5e33]:
+        - generic [ref=f5e34]:
+          - generic [ref=f5e35]:
+            - link [ref=f5e36] [cursor=pointer]:
+              - /url: /profile
+            - generic [ref=f5e41]:
+              - heading "Welcome, Admin (Super)" [level=1] [ref=f5e42]
+              - paragraph [ref=f5e43]: Admin Dashboard
+          - link "Manage Data" [ref=f5e44] [cursor=pointer]:
+            - /url: /admin/users
+        - generic [ref=f5e49]:
+          - generic [ref=f5e50]:
+            - paragraph [ref=f5e56]: "2"
+            - paragraph [ref=f5e57]: Total Unit
+          - generic [ref=f5e58]:
+            - paragraph [ref=f5e66]: "4"
+            - paragraph [ref=f5e67]: Total User
+          - generic [ref=f5e68]:
+            - paragraph [ref=f5e74]: "0"
+            - paragraph [ref=f5e75]: Total Laporan
+          - generic [ref=f5e76]:
+            - paragraph [ref=f5e82]: "0"
+            - paragraph [ref=f5e83]: Pending Approval
+        - generic [ref=f5e84]:
+          - heading "Quick Actions" [level=2] [ref=f5e85]
+          - generic [ref=f5e86]:
+            - link [ref=f5e87] [cursor=pointer]:
+              - /url: /admin/users
+              - heading "Manage Users" [level=3] [ref=f5e95]
+              - paragraph [ref=f5e96]: Kelola akun operator, instruktur, dan dosen
+            - link [ref=f5e97] [cursor=pointer]:
+              - /url: /admin/units
+              - heading "Manage Units" [level=3] [ref=f5e103]
+              - paragraph [ref=f5e104]: Kelola unit heavy equipment
+            - link [ref=f5e105] [cursor=pointer]:
+              - /url: /admin/checklist
+              - heading "Master Sheet" [level=3] [ref=f5e111]
+              - paragraph [ref=f5e112]: Kelola checklist parameters
+        - generic [ref=f5e113]:
+          - generic [ref=f5e114]:
+            - generic [ref=f5e115]:
+              - heading "Recent Reports" [level=2] [ref=f5e116]
+              - link "View All" [ref=f5e120] [cursor=pointer]:
+                - /url: /reports
+            - paragraph [ref=f5e127]: Belum ada laporan.
+          - generic [ref=f5e128]:
+            - heading "Aktivitas Terbaru" [level=2] [ref=f5e130]
+            - paragraph [ref=f5e136]: Belum ada aktivitas.
+  - button "Open Next.js Dev Tools" [ref=f5e142] [cursor=pointer]

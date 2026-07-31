@@ -1,0 +1,23 @@
+[     569ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[     683ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[     953ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[    2424ms] [LOG] [Fast Refresh] done in 1580ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[   46619ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[   46715ms] [LOG] [Fast Refresh] done in 199ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[   72721ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[   72849ms] [LOG] [Fast Refresh] done in 240ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[  123533ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[  123597ms] [LOG] [Fast Refresh] done in 179ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[  139986ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[  140069ms] [LOG] [Fast Refresh] done in 190ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[  220977ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489
+[  247681ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_RESET @ http://localhost:3000/login?_rsc=2PWn4eNgFwgEGU5W:0
+[  247684ms] [ERROR] Failed to fetch RSC payload for http://localhost:3000/login. Falling back to browser navigation. TypeError: Failed to fetch
+    at createFetch (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0r5nbpw._.js:8207:21)
+    at async fetchServerResponse (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0r5nbpw._.js:8051:21)
+    at async fetchMissingDynamicData (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0r5nbpw._.js:9464:24) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3330
+[  247688ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_RESET @ http://localhost:3000/login?_rsc=2PWn4eNgFwgEGU5W:0
+[  247689ms] [ERROR] Failed to fetch RSC payload for http://localhost:3000/login. Falling back to browser navigation. TypeError: Failed to fetch
+    at createFetch (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0r5nbpw._.js:8207:21)
+    at async fetchServerResponse (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0r5nbpw._.js:8051:21)
+    at async fetchMissingDynamicData (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0r5nbpw._.js:9464:24) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3330

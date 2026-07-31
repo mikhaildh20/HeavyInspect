@@ -5,7 +5,7 @@ import { Camera, AlertTriangle, Trash2, CheckCircle, XCircle, WifiOff } from 'lu
 import { SignaturePad } from './SignaturePad';
 import { PhotoCapture } from './PhotoCapture';
 import { useRouter } from 'next/navigation';
-import { submitP2HReport } from '@/app/actions/p2h';
+import { submitP2HReport } from '@/actions/p2h';
 import { useGeolocation } from '@/hooks/useGeolocation';
 
 type ChecklistItem = {
@@ -425,19 +425,22 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
           <span></span>
         </div>
         {fluids.map((fluid, idx) => (
-          <div key={idx} className="grid grid-cols-[40px_1fr_120px_40px] gap-2 mb-2 items-center">
+          <div key={idx} className="grid grid-cols-[40px_1fr_120px_70px] gap-2 mb-2 items-center">
             <span className="text-gray-400 text-sm">{idx + 1}</span>
-            <input
-              type="text"
-              placeholder="e.g. Oil, Coolant, Grease"
+            <select
               value={fluid.type}
               onChange={(e) => {
                 const updated = [...fluids];
                 updated[idx].type = e.target.value;
                 setFluids(updated);
               }}
-              className="p-2 bg-gray-900 border border-gray-600 rounded text-sm text-white placeholder-gray-500 focus:border-primary outline-none"
-            />
+              className="p-2 bg-gray-900 border border-gray-600 rounded text-sm text-white focus:border-primary outline-none"
+            >
+              <option value="">Pilih jenis</option>
+              <option value="Oil">Oil</option>
+              <option value="Coolant">Coolant</option>
+              <option value="Grease">Grease</option>
+            </select>
             <input
               type="number"
               placeholder="0"
@@ -449,15 +452,26 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
               }}
               className="p-2 bg-gray-900 border border-gray-600 rounded text-sm text-white placeholder-gray-500 focus:border-primary outline-none"
             />
-            {idx === fluids.length - 1 && fluid.type && (
-              <button
-                type="button"
-                onClick={() => setFluids([...fluids, { type: '', quantity: '' }])}
-                className="w-7 h-7 bg-gray-700 hover:bg-gray-600 rounded text-white text-sm flex items-center justify-center"
-              >
-                +
-              </button>
-            )}
+            <div className="flex gap-1">
+              {idx === fluids.length - 1 && (
+                <button
+                  type="button"
+                  onClick={() => setFluids([...fluids, { type: '', quantity: '' }])}
+                  className="w-7 h-7 bg-gray-700 hover:bg-gray-600 rounded text-white text-sm flex items-center justify-center"
+                >
+                  +
+                </button>
+              )}
+              {fluids.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setFluids(fluids.filter((_, i) => i !== idx))}
+                  className="w-7 h-7 bg-red-900/50 hover:bg-red-800 rounded text-red-400 text-sm flex items-center justify-center"
+                >
+                  ×
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

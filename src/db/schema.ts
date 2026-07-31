@@ -1,19 +1,20 @@
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
-import { relations, sql } from 'drizzle-orm';
+import { pgTable, serial, text, integer, real, boolean, timestamp, jsonb } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 
 // --- Users ---
-export const users = sqliteTable('users', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
   username: text('username').notNull().unique(),
   passwordHash: text('password_hash').notNull(),
   fullName: text('full_name').notNull(),
-  role: text('role', { enum: ['operator', 'leader', 'supervisor'] }).notNull(),
-  mustChangePassword: integer('must_change_password').notNull().default(0),
+  role: text('role', { enum: ['operator', 'leader', 'supervisor', 'admin'] }).notNull(),
+  mustChangePassword: boolean('must_change_password').notNull().default(false),
   generatedPassword: text('generated_password'),
-  isActive: integer('is_active').notNull().default(1),
-  deletedAt: text('deleted_at'),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  deletedAt: timestamp('deleted_at'),
+  avatarUrl: text('avatar_url').default(''),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -21,8 +22,8 @@ export const usersRelations = relations(users, ({ many }) => ({
 }));
 
 // --- Units ---
-export const units = sqliteTable('units', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const units = pgTable('units', {
+  id: serial('id').primaryKey(),
   unitCode: text('unit_code').notNull().unique(),
   modelName: text('model_name').notNull().default('Komatsu PC 200-8'),
   lastSmr: real('last_smr').notNull().default(0.0),
@@ -30,10 +31,10 @@ export const units = sqliteTable('units', {
   woJono: text('wo_jo_no').default(''),
   zone: text('zone').default(''),
   inspectionStart: text('inspection_start').default(''),
-  isActive: integer('is_active').notNull().default(1),
-  deletedAt: text('deleted_at'),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  deletedAt: timestamp('deleted_at'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const unitsRelations = relations(units, ({ many }) => ({
@@ -42,15 +43,15 @@ export const unitsRelations = relations(units, ({ many }) => ({
 }));
 
 // --- Checklist Categories ---
-export const checklistCategories = sqliteTable('checklist_categories', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const checklistCategories = pgTable('checklist_categories', {
+  id: serial('id').primaryKey(),
   letter: text('letter').notNull().unique(),
   name: text('name').notNull(),
   sortOrder: integer('sort_order').notNull().default(0),
-  isActive: integer('is_active').notNull().default(1),
-  deletedAt: text('deleted_at'),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  deletedAt: timestamp('deleted_at'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const checklistCategoriesRelations = relations(checklistCategories, ({ many }) => ({
@@ -58,16 +59,16 @@ export const checklistCategoriesRelations = relations(checklistCategories, ({ ma
 }));
 
 // --- Checklist Parameters ---
-export const checklistParameters = sqliteTable('checklist_parameters', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const checklistParameters = pgTable('checklist_parameters', {
+  id: serial('id').primaryKey(),
   categoryId: integer('category_id').references(() => checklistCategories.id, { onDelete: 'set null' }),
   category: text('category').notNull(),
   description: text('description').notNull(),
   sortOrder: integer('sort_order').notNull().default(0),
-  isActive: integer('is_active').notNull().default(1),
-  deletedAt: text('deleted_at'),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  deletedAt: timestamp('deleted_at'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const checklistParametersRelations = relations(checklistParameters, ({ one, many }) => ({
@@ -76,13 +77,13 @@ export const checklistParametersRelations = relations(checklistParameters, ({ on
   unitChecklistItems: many(unitChecklistItems),
 }));
 
-export const unitChecklistItems = sqliteTable('unit_checklist_items', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const unitChecklistItems = pgTable('unit_checklist_items', {
+  id: serial('id').primaryKey(),
   unitId: integer('unit_id').notNull().references(() => units.id, { onDelete: 'cascade' }),
   parameterId: integer('parameter_id').notNull().references(() => checklistParameters.id, { onDelete: 'cascade' }),
   sortOrder: integer('sort_order').notNull().default(0),
-  isActive: integer('is_active').notNull().default(1),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
 export const unitChecklistItemsRelations = relations(unitChecklistItems, ({ one }) => ({
@@ -91,8 +92,8 @@ export const unitChecklistItemsRelations = relations(unitChecklistItems, ({ one 
 }));
 
 // --- P2H Reports ---
-export const p2hReports = sqliteTable('p2h_reports', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const p2hReports = pgTable('p2h_reports', {
+  id: serial('id').primaryKey(),
   unitId: integer('unit_id').notNull().references(() => units.id, { onDelete: 'restrict' }),
   operatorId: integer('operator_id').notNull().references(() => users.id, { onDelete: 'restrict' }),
   reportDate: text('report_date').notNull(),
@@ -105,9 +106,9 @@ export const p2hReports = sqliteTable('p2h_reports', {
   gpsLongitude: real('gps_longitude'),
   gpsAccuracy: real('gps_accuracy'),
   gpsTimestamp: text('gps_timestamp'),
-  isActive: integer('is_active').notNull().default(1),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const p2hReportsRelations = relations(p2hReports, ({ one, many }) => ({
@@ -118,16 +119,16 @@ export const p2hReportsRelations = relations(p2hReports, ({ one, many }) => ({
 }));
 
 // --- P2H Results ---
-export const p2hResults = sqliteTable('p2h_results', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const p2hResults = pgTable('p2h_results', {
+  id: serial('id').primaryKey(),
   reportId: integer('report_id').notNull().references(() => p2hReports.id, { onDelete: 'cascade' }),
   parameterId: integer('parameter_id').notNull().references(() => checklistParameters.id, { onDelete: 'restrict' }),
   condition: text('condition', { enum: ['OK', 'NOT OK'] }).notNull(),
   photoUrl: text('photo_url'),
   notes: text('notes'),
-  isActive: integer('is_active').notNull().default(1),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const p2hResultsRelations = relations(p2hResults, ({ one }) => ({
@@ -136,14 +137,14 @@ export const p2hResultsRelations = relations(p2hResults, ({ one }) => ({
 }));
 
 // --- Fluid Additions ---
-export const fluidAdditions = sqliteTable('fluid_additions', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const fluidAdditions = pgTable('fluid_additions', {
+  id: serial('id').primaryKey(),
   reportId: integer('report_id').notNull().references(() => p2hReports.id, { onDelete: 'cascade' }),
   fluidType: text('fluid_type').notNull(),
   quantity: real('quantity').notNull().default(0.00),
-  isActive: integer('is_active').notNull().default(1),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const fluidAdditionsRelations = relations(fluidAdditions, ({ one }) => ({
@@ -151,15 +152,15 @@ export const fluidAdditionsRelations = relations(fluidAdditions, ({ one }) => ({
 }));
 
 // --- Audit Log ---
-export const auditLog = sqliteTable('audit_log', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const auditLog = pgTable('audit_log', {
+  id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'restrict' }),
   action: text('action').notNull(),
   entity: text('entity').notNull(),
   entityId: integer('entity_id'),
   details: text('details'),
   ipAddress: text('ip_address'),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
 export const auditLogRelations = relations(auditLog, ({ one }) => ({
@@ -167,15 +168,15 @@ export const auditLogRelations = relations(auditLog, ({ one }) => ({
 }));
 
 // --- Notifications ---
-export const notifications = sqliteTable('notifications', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const notifications = pgTable('notifications', {
+  id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   type: text('type').notNull().default('info'),
   title: text('title').notNull(),
   message: text('message').notNull(),
-  isRead: integer('is_read').notNull().default(0),
+  isRead: boolean('is_read').notNull().default(false),
   actionUrl: text('action_url'),
-  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
 export const notificationsRelations = relations(notifications, ({ one }) => ({

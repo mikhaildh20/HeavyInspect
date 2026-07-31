@@ -5,7 +5,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { Box, Edit2, Trash2, Eye, EyeOff, Printer, ClipboardCheck, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { UnitForm } from '@/components/admin/UnitForm';
-import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { ConfirmModal } from '@/components/layout/ConfirmModal';
 
 type Unit = {
   id: number;
@@ -16,7 +16,7 @@ type Unit = {
   woJono: string | null;
   zone: string | null;
   inspectionStart: string | null;
-  isActive: number;
+  isActive: boolean;
 };
 
 interface UnitsListProps {
@@ -269,7 +269,7 @@ export function UnitsList({ units: initialUnits, role }: UnitsListProps) {
                   <QRCodeSVG value={unit.unitCode} size={180} level="H" includeMargin />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm text-gray-400">Scan to start inspection</p>
+                  <p className="text-sm text-gray-400">Scan untuk memulai inspeksi</p>
                   <p className="text-xs text-gray-500 mt-1 font-mono">{unit.unitCode}</p>
                 </div>
               </div>

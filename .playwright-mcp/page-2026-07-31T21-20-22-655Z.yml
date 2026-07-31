@@ -1,0 +1,36 @@
+- generic [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - main [ref=f2e35]:
+      - generic [ref=f2e36]:
+        - generic [ref=f2e37]:
+          - link [ref=f2e38] [cursor=pointer]:
+            - /url: /profile
+          - generic [ref=f2e43]:
+            - heading "Welcome, Agus (Leader)" [level=1] [ref=f2e44]
+            - paragraph [ref=f2e45]: Instruktur Dashboard
+        - button [ref=f2e48]
+      - generic [ref=f2e52]:
+        - generic [ref=f2e53]:
+          - heading "Pending Approval" [level=2] [ref=f2e54]
+          - paragraph [ref=f2e59]: No reports pending your approval.
+        - link "View All Reports" [ref=f2e60] [cursor=pointer]:
+          - /url: /reports
+    - navigation [ref=f2e64]:
+      - generic [ref=f2e65]:
+        - link "Home" [ref=f2e66] [cursor=pointer]:
+          - /url: /dashboard
+        - link "Reports" [ref=f2e71] [cursor=pointer]:
+          - /url: /reports
+        - link "Units" [ref=f2e77] [cursor=pointer]:
+          - /url: /units
+        - link "Profile" [ref=f2e84] [cursor=pointer]:
+          - /url: /profile
+        - button "Logout" [active] [ref=f2e89]
+    - generic [ref=f2e96]:
+      - heading "Logout?" [level=3] [ref=f2e101]
+      - paragraph [ref=f2e102]: You will be logged out and redirected to the login page.
+      - generic [ref=f2e103]:
+        - button "Cancel" [ref=f2e104]
+        - button "Logout" [ref=f2e105]
+  - button "Open Next.js Dev Tools" [ref=f2e30] [cursor=pointer]
+  - alert [ref=f2e34]

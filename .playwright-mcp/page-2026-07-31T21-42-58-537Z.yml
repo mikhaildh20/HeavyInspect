@@ -1,0 +1,62 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - navigation [ref=e7]:
+      - link [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+      - link "Dashboard" [ref=e11] [cursor=pointer]:
+        - /url: /admin
+      - link "Users" [ref=e17] [cursor=pointer]:
+        - /url: /admin/users
+      - link "Units" [ref=e23] [cursor=pointer]:
+        - /url: /admin/units
+      - link "Master Sheet" [ref=e27] [cursor=pointer]:
+        - /url: /admin/checklist
+  - main [ref=e31]:
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - link [ref=e35] [cursor=pointer]:
+            - /url: /profile
+          - generic [ref=e40]:
+            - heading "Welcome, Admin (Super)" [level=1] [ref=e41]
+            - paragraph [ref=e42]: Admin Dashboard
+        - link "Manage Data" [ref=e43] [cursor=pointer]:
+          - /url: /admin/users
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - paragraph [ref=e55]: "8"
+          - paragraph [ref=e56]: Total Unit
+        - generic [ref=e57]:
+          - paragraph [ref=e65]: "4"
+          - paragraph [ref=e66]: Total User
+        - generic [ref=e67]:
+          - paragraph [ref=e73]: "0"
+          - paragraph [ref=e74]: Total Laporan
+        - generic [ref=e75]:
+          - paragraph [ref=e81]: "0"
+          - paragraph [ref=e82]: Pending Approval
+      - generic [ref=e83]:
+        - heading "Quick Actions" [level=2] [ref=e84]
+        - generic [ref=e85]:
+          - link [ref=e86] [cursor=pointer]:
+            - /url: /admin/users
+            - heading "Manage Users" [level=3] [ref=e94]
+            - paragraph [ref=e95]: Kelola akun operator, instruktur, dan dosen
+          - link [ref=e96] [cursor=pointer]:
+            - /url: /admin/units
+            - heading "Manage Units" [level=3] [ref=e102]
+            - paragraph [ref=e103]: Kelola unit heavy equipment
+          - link [ref=e104] [cursor=pointer]:
+            - /url: /admin/checklist
+            - heading "Master Sheet" [level=3] [ref=e110]
+            - paragraph [ref=e111]: Kelola checklist parameters
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e114]:
+            - heading "Recent Reports" [level=2] [ref=e115]
+            - link "View All" [ref=e119] [cursor=pointer]:
+              - /url: /reports
+          - paragraph [ref=e126]: Belum ada laporan.
+        - generic [ref=e127]:
+          - heading "Aktivitas Terbaru" [level=2] [ref=e129]
+          - paragraph [ref=e135]: Belum ada aktivitas.

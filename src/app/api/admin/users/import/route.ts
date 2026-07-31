@@ -81,7 +81,7 @@ export async function POST(request: Request) {
       fullName,
       role: role as 'operator' | 'leader' | 'supervisor',
       passwordHash,
-      mustChangePassword: 1,
+      mustChangePassword: true,
       generatedPassword: generatedPw,
     });
 

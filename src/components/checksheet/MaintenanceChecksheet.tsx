@@ -20,26 +20,26 @@ interface MaintenanceChecksheetProps {
 }
 
 const CONDITION_OPTIONS = [
-  { code: 'G', label: 'Good', color: 'bg-green-600 text-white' },
-  { code: 'B', label: 'Bad', color: 'bg-yellow-500 text-black' },
-  { code: 'U', label: 'Unchecked', color: 'bg-red-500 text-white' },
+  { code: 'G', label: 'Baik', color: 'bg-green-600 text-white' },
+  { code: 'B', label: 'Buruk', color: 'bg-yellow-500 text-black' },
+  { code: 'U', label: 'Belum Dicek', color: 'bg-red-500 text-white' },
 ] as const;
 
 const PRIORITY_CONDITIONS = [
-  { code: 1, label: 'Leaking' },
-  { code: 2, label: 'Broken' },
-  { code: 3, label: 'Missing' },
-  { code: 4, label: 'Loose' },
-  { code: 5, label: 'Worn' },
-  { code: 6, label: 'Crack' },
-  { code: 7, label: 'Others' },
+  { code: 1, label: 'Bocor' },
+  { code: 2, label: 'Rusak' },
+  { code: 3, label: 'Hilang' },
+  { code: 4, label: 'Longgar' },
+  { code: 5, label: 'Aus' },
+  { code: 6, label: 'Retak' },
+  { code: 7, label: 'Lainnya' },
 ];
 
 const ACTION_CODES = [
-  { code: 1, label: 'Action now' },
-  { code: 2, label: 'Action at change shift' },
-  { code: 3, label: 'Action on next PS' },
-  { code: 4, label: 'Action on schedule backlog' },
+  { code: 1, label: 'Tindakan sekarang' },
+  { code: 2, label: 'Tindakan saat ganti shift' },
+  { code: 3, label: 'Tindakan pada PS berikutnya' },
+  { code: 4, label: 'Tindakan pada jadwal backlog' },
 ];
 
 export function MaintenanceChecksheet({
@@ -98,19 +98,19 @@ export function MaintenanceChecksheet({
       <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
           <div>
-            <p className="font-bold text-white mb-1">Condition</p>
-            <p className="text-gray-300"><span className="text-green-400 font-bold">G</span> = Good Condition</p>
-            <p className="text-gray-300"><span className="text-yellow-400 font-bold">B</span> = Bad Condition</p>
-            <p className="text-gray-300"><span className="text-red-400 font-bold">U</span> = Unchecked</p>
+            <p className="font-bold text-white mb-1">Kondisi</p>
+            <p className="text-gray-300"><span className="text-green-400 font-bold">G</span> = Kondisi Baik</p>
+            <p className="text-gray-300"><span className="text-yellow-400 font-bold">B</span> = Kondisi Buruk</p>
+            <p className="text-gray-300"><span className="text-red-400 font-bold">U</span> = Belum Dicek</p>
           </div>
           <div>
-            <p className="font-bold text-white mb-1">Priority Condition</p>
+            <p className="font-bold text-white mb-1">Prioritas Kondisi</p>
             {PRIORITY_CONDITIONS.map(p => (
               <p key={p.code} className="text-gray-300">{p.code} = {p.label}</p>
             ))}
           </div>
           <div>
-            <p className="font-bold text-white mb-1">Action</p>
+            <p className="font-bold text-white mb-1">Tindakan</p>
             {ACTION_CODES.map(a => (
               <p key={a.code} className="text-gray-300">{a.code} = {a.label}</p>
             ))}
@@ -120,10 +120,10 @@ export function MaintenanceChecksheet({
 
       <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
         <div className="flex items-center gap-4 text-sm">
-          <span className="text-green-400 font-bold">{stats.g} Good</span>
-          <span className="text-yellow-400 font-bold">{stats.b} Bad</span>
-          <span className="text-gray-400">{stats.unchecked} unchecked</span>
-          <span className="text-gray-500 ml-auto">{stats.total} items</span>
+          <span className="text-green-400 font-bold">{stats.g} Baik</span>
+          <span className="text-yellow-400 font-bold">{stats.b} Buruk</span>
+          <span className="text-gray-400">{stats.unchecked} belum dicek</span>
+          <span className="text-gray-500 ml-auto">{stats.total} item</span>
         </div>
       </div>
 
@@ -135,10 +135,10 @@ export function MaintenanceChecksheet({
 
           <div className="hidden md:grid grid-cols-[auto_1fr_80px_1fr_80px_100px] gap-2 p-3 bg-gray-900/50 text-xs font-medium text-gray-400 border-b border-gray-700">
             <span className="w-8">#</span>
-            <span>Description</span>
-            <span className="text-center">Condition</span>
+            <span>Deskripsi</span>
+            <span className="text-center">Kondisi</span>
             <span>Note</span>
-            <span className="text-center">Priority</span>
+            <span className="text-center">Prioritas</span>
             <span className="text-center">Foto</span>
           </div>
 
@@ -169,7 +169,7 @@ export function MaintenanceChecksheet({
 
                   <input
                     type="text"
-                    placeholder="Note..."
+                    placeholder="Catatan..."
                     value={result?.note || ''}
                     onChange={(e) => updateResult(item.id, 'note', e.target.value)}
                     className="p-2 bg-gray-900 border border-gray-600 rounded text-xs text-white placeholder-gray-500 focus:border-primary outline-none"
@@ -226,13 +226,13 @@ export function MaintenanceChecksheet({
       ))}
 
       <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
-        <h3 className="font-semibold text-white mb-3">Additional Fluids (Oil, Coolant, Grease)</h3>
+        <h3 className="font-semibold text-white mb-3">Penambahan Fluida (Oli, Coolant, Grease)</h3>
         {fluidAdditions.map((fluid, idx) => (
           <div key={idx} className="grid grid-cols-[40px_1fr_120px_40px] gap-2 mb-2 items-center">
             <span className="text-gray-400 text-sm">{idx + 1}</span>
             <input
               type="text"
-              placeholder="e.g. Oil, Coolant, Grease"
+              placeholder="Contoh: Oli, Coolant, Grease"
               value={fluid.type}
               onChange={(e) => {
                 const updated = [...fluidAdditions];

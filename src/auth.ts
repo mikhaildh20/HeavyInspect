@@ -40,7 +40,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id.toString(),
           name: user.fullName,
           role: user.role,
-          mustChangePassword: user.mustChangePassword === 1,
+          mustChangePassword: user.mustChangePassword === true,
+          avatarUrl: user.avatarUrl || '',
         };
       },
     }),

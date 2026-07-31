@@ -1,0 +1,40 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - main [ref=f2e35]:
+      - generic [ref=f2e36]:
+        - generic [ref=f2e37]:
+          - link [ref=f2e38] [cursor=pointer]:
+            - /url: /profile
+          - generic [ref=f2e43]:
+            - heading "Welcome, Budi (Operator)" [level=1] [ref=f2e44]
+            - paragraph [ref=f2e45]: Mahasiswa Dashboard
+        - button [ref=f2e48]
+      - generic [ref=f2e52]:
+        - generic [ref=f2e53]:
+          - generic [ref=f2e54]:
+            - paragraph [ref=f2e55]: "0"
+            - paragraph [ref=f2e56]: Total Reports
+          - generic [ref=f2e57]:
+            - paragraph [ref=f2e58]: "0"
+            - paragraph [ref=f2e59]: Pending Review
+        - generic [ref=f2e60]:
+          - heading "Recent Reports" [level=2] [ref=f2e61]
+          - paragraph [ref=f2e67]: No inspection reports yet.
+        - generic [ref=f2e68]:
+          - link "New Inspection" [ref=f2e69] [cursor=pointer]:
+            - /url: /scan
+          - link "View All Reports" [ref=f2e74] [cursor=pointer]:
+            - /url: /reports
+    - navigation [ref=f2e78]:
+      - generic [ref=f2e79]:
+        - link "Home" [ref=f2e80] [cursor=pointer]:
+          - /url: /dashboard
+        - link "Scan" [ref=f2e85] [cursor=pointer]:
+          - /url: /scan
+        - link "Reports" [ref=f2e92] [cursor=pointer]:
+          - /url: /reports
+        - link "Profile" [ref=f2e98] [cursor=pointer]:
+          - /url: /profile
+        - button "Logout" [ref=f2e103]
+  - button "Open Next.js Dev Tools" [ref=f2e30] [cursor=pointer]
+  - alert [ref=f2e34]

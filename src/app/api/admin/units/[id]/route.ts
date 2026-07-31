@@ -58,7 +58,7 @@ export async function DELETE(
   }
 
   await db.update(units)
-    .set({ deletedAt: new Date().toISOString() })
+    .set({ deletedAt: new Date() })
     .where(eq(units.id, parseInt(id)));
 
   return NextResponse.json({ success: true });

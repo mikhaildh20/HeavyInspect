@@ -10,16 +10,24 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { fullName } = await request.json();
+  const { fullName, avatarUrl } = await request.json();
 
-  if (!fullName || fullName.trim().length < 2) {
-    return NextResponse.json({ error: 'Name must be at least 2 characters' }, { status: 400 });
+  if (avatarUrl !== undefined) {
+    await db.update(users).set({
+      avatarUrl: avatarUrl || '',
+      updatedAt: new Date(),
+    }).where(eq(users.id, parseInt(session.user.id)));
   }
 
-  await db.update(users).set({
-    fullName: fullName.trim(),
-    updatedAt: new Date().toISOString(),
-  }).where(eq(users.id, parseInt(session.user.id)));
+  if (fullName !== undefined) {
+    if (!fullName || fullName.trim().length < 2) {
+      return NextResponse.json({ error: 'Name must be at least 2 characters' }, { status: 400 });
+    }
+    await db.update(users).set({
+      fullName: fullName.trim(),
+      updatedAt: new Date(),
+    }).where(eq(users.id, parseInt(session.user.id)));
+  }
 
   return NextResponse.json({ success: true });
 }

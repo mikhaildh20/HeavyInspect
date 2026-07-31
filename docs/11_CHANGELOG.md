@@ -8,6 +8,21 @@ Added
 
 * [Kosong / Belum ada perubahan]
 
+[0.16.0] - 2026-08-01
+
+Changed
+
+* Indonesian Localization: Terjemahkan seluruh UI text ke Bahasa Indonesia untuk konsistensi — mencakup semua komponen utama: BottomNav, dashboard pages (Mahasiswa/Approval/Dosen), ScannerView, ReportList, ReportDetail, ProfileForm, MaintenanceChecksheet, checksheet page, units page, admin pages, AdminNav, AdminSidebar, login form, dan change-password page.
+* Status Labels Indonesian: Status badges diseragamkan — Approved→Disetujui, Submitted→Menunggu Instruktur, PendingSupervisor→Menunggu Dosen, Rejected→Ditolak, Draft→Draft.
+* Admin Page Indonesian: Statistik (Total Laporan, Menunggu Persetujuan), quick links (Kelola User, Kelola Unit, Master Sheet), heading (Laporan Terkini, Aktivitas Terkini, Status Unit).
+* Login Form Indonesian: Welcome Back→Selamat Datang, Sign In→Masuk, placeholder teks, P2H Digital Inspection System→Sistem Inspeksi P2H Digital.
+* Checklist Indonesian: Condition→Kondisi, Priority Condition→Prioritas Kondisi, Action→Tindakan, Additional Fluids→Penambahan Fluida, deskripsi kolom, status counts (Baik/Buruk/belum dicek).
+* Dashboard Stats Indonesian: Total Reports→Total Laporan, Pending Review→Menunggu Review, Recent Reports→Laporan Terkini, New Inspection→Inspeksi Baru, View All Reports→Lihat Semua Laporan.
+* Profile Form Indonesian: Full Name→Nama Lengkap, Current Password→Password Saat Ini, New Password→Password Baru, Confirm New Password→Konfirmasi Password Baru, Save Changes→Simpan Perubahan, Change Password→Ubah Password.
+* NotificationBell Indonesian: Sudah lengkap dalam Bahasa Indonesia — Notifikasi, Tandai semua dibaca, Belum ada notifikasi, Lihat Detail.
+* Admin Nav/Sidebar Indonesian: Users→User, Units→Unit, Admin Panel→Panel Admin, Manage Data→Kelola Data.
+* README Updated: Dokumentasi README.md diperbarui — Tech Stack (PostgreSQL 18 lokal), fitur lanjutan (notifikasi, admin sidebar, audit log), project structure lengkap, daftar 8 unit, dan instruksi setup database.
+
 [0.15.0] - 2026-07-31
 
 Added

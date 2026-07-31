@@ -8,6 +8,7 @@ const stmts = [
   "ALTER TABLE units ADD COLUMN inspection_start TEXT DEFAULT ''",
   "ALTER TABLE users ADD COLUMN must_change_password INTEGER DEFAULT 0",
   "ALTER TABLE users ADD COLUMN generated_password TEXT",
+  "ALTER TABLE users ADD COLUMN avatar_url TEXT DEFAULT ''",
 ];
 
 for (const s of stmts) {
@@ -19,6 +20,22 @@ for (const s of stmts) {
   }
 }
 
+// Fix notifications table: rename "read" column to "is_read" if it exists
+try {
+  const cols = db.prepare("PRAGMA table_info(notifications)").all();
+  const hasRead = cols.some(c => c.name === 'read');
+  const hasIsRead = cols.some(c => c.name === 'is_read');
+  if (hasRead && !hasIsRead) {
+    db.exec('ALTER TABLE notifications RENAME COLUMN "read" TO is_read');
+    console.log('OK: Renamed notifications."read" to is_read');
+  } else if (hasIsRead) {
+    console.log('SKIP: notifications already has is_read column');
+  }
+} catch (e) {
+  console.log('SKIP notifications rename:', e.message);
+}
+
+// Create notifications table if it doesn't exist (with correct schema)
 try {
   db.exec(`CREATE TABLE IF NOT EXISTS notifications (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -26,12 +43,12 @@ try {
     type TEXT DEFAULT 'info' NOT NULL,
     title TEXT NOT NULL,
     message TEXT NOT NULL,
-    "read" INTEGER DEFAULT 0 NOT NULL,
+    is_read INTEGER DEFAULT 0 NOT NULL,
     action_url TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )`);
-  console.log('OK: notifications table created');
+  console.log('OK: notifications table created/verified');
 } catch (e) {
   console.log('SKIP notifications:', e.message);
 }

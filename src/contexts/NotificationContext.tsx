@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react';
-import { getMyNotifications, markNotificationRead, markAllNotificationsRead } from '@/app/actions/notifications';
+import { getMyNotifications, markNotificationRead, markAllNotificationsRead } from '@/actions/notifications';
 
 export interface Notification {
   id: string;

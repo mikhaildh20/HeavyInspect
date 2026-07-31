@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     letter: letter.toUpperCase(),
     name,
     sortOrder: sortOrder ?? 0,
-    isActive: isActive ?? 1,
+    isActive: isActive ?? true,
   }).returning();
 
   return NextResponse.json(newCategory[0]);

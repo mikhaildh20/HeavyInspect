@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { Plus, Edit2, Trash2, ClipboardList, Save, X, ChevronDown, ChevronRight } from 'lucide-react';
-import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { ConfirmModal } from '@/components/layout/ConfirmModal';
 
 interface ChecklistCategory {
   id: number;
   letter: string;
   name: string;
   sortOrder: number;
-  isActive: number;
+  isActive: boolean;
 }
 
 interface ChecklistParameter {
@@ -18,7 +18,7 @@ interface ChecklistParameter {
   category: string;
   description: string;
   sortOrder: number;
-  isActive: number;
+  isActive: boolean;
 }
 
 interface SheetManagerProps {

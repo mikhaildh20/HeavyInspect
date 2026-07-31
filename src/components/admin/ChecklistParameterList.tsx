@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { ChecklistParameterForm } from './ChecklistParameterForm';
 import { Plus, Edit2, Trash2, ClipboardList } from 'lucide-react';
-import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { ConfirmModal } from '@/components/layout/ConfirmModal';
 
 interface ChecklistParameter {
   id: number;
   category: string;
   description: string;
-  isActive: number;
+  isActive: boolean;
 }
 
 interface ChecklistParameterListProps {
@@ -55,7 +55,7 @@ export function ChecklistParameterList({ parameters: initialParameters }: Checkl
     });
   };
 
-  const handleSave = (savedParam: { id?: number; category: string; description: string; isActive: number }) => {
+  const handleSave = (savedParam: { id?: number; category: string; description: string; isActive: boolean }) => {
     if (editingParameter && savedParam.id) {
       setParameters(parameters.map(p => p.id === savedParam.id ? { ...savedParam, id: savedParam.id } : p));
     } else if (savedParam.id) {

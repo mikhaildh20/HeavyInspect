@@ -53,28 +53,28 @@ export function ReportList({ reports, role }: ReportListProps) {
         return (
           <span className="flex items-center gap-1 text-xs px-2 py-1 bg-green-900/50 text-green-400 rounded-full border border-green-700">
             <CheckCircle size={12} />
-            Approved
+            Disetujui
           </span>
         );
       case 'Submitted':
         return (
           <span className="flex items-center gap-1 text-xs px-2 py-1 bg-blue-900/50 text-blue-400 rounded-full border border-blue-700">
             <Clock size={12} />
-            Pending Leader
+            Menunggu Instruktur
           </span>
         );
       case 'PendingSupervisor':
         return (
           <span className="flex items-center gap-1 text-xs px-2 py-1 bg-yellow-900/50 text-yellow-400 rounded-full border border-yellow-700">
             <Clock size={12} />
-            Pending Supervisor
+            Menunggu Dosen
           </span>
         );
       case 'Rejected':
         return (
           <span className="flex items-center gap-1 text-xs px-2 py-1 bg-red-900/50 text-red-400 rounded-full border border-red-700">
             <XCircle size={12} />
-            Rejected
+            Ditolak
           </span>
         );
       default:
@@ -97,7 +97,7 @@ export function ReportList({ reports, role }: ReportListProps) {
     return (
       <div className="bg-gray-800 rounded-xl p-8 border border-gray-700 text-center">
         <FileText size={48} className="text-gray-600 mx-auto mb-4" />
-        <p className="text-gray-400">No reports yet.</p>
+        <p className="text-gray-400">Belum ada laporan.</p>
       </div>
     );
   }
@@ -105,9 +105,9 @@ export function ReportList({ reports, role }: ReportListProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 text-sm text-gray-400">
-        <span>Sort by:</span>
+        <span>Urutkan:</span>
         <button onClick={() => toggleSort('reportDate')} className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-gray-800 transition-colors">
-          Date <SortIcon field="reportDate" />
+          Tanggal <SortIcon field="reportDate" />
         </button>
         <button onClick={() => toggleSort('unitCode')} className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-gray-800 transition-colors">
           Unit <SortIcon field="unitCode" />
@@ -126,7 +126,7 @@ export function ReportList({ reports, role }: ReportListProps) {
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <p className="font-medium text-lg text-white">{report.unitCode || 'Unknown Unit'}</p>
+                <p className="font-medium text-lg text-white">{report.unitCode || 'Unit Tidak Diketahui'}</p>
                 {getStatusBadge(report.status)}
               </div>
               <div className="flex items-center gap-4 text-sm text-gray-400">
@@ -147,7 +147,7 @@ export function ReportList({ reports, role }: ReportListProps) {
       {totalPages > 1 && (
         <div className="flex items-center justify-between pt-2">
           <p className="text-sm text-gray-500">
-            {sorted.length} reports • Page {page} of {totalPages}
+            {sorted.length} laporan • Halaman {page} dari {totalPages}
           </p>
           <div className="flex items-center gap-2">
             <button

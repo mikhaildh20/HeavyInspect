@@ -35,7 +35,7 @@ export async function PUT(
   if (resetPassword) {
     const newPassword = generatePassword();
     setFields.passwordHash = await bcrypt.hash(newPassword, 12);
-    setFields.mustChangePassword = 1;
+    setFields.mustChangePassword = true;
     setFields.generatedPassword = newPassword;
   }
 
@@ -78,7 +78,7 @@ export async function DELETE(
   }
 
   const updated = await db.update(users)
-    .set({ deletedAt: new Date().toISOString() })
+    .set({ deletedAt: new Date() })
     .where(eq(users.id, parseInt(id)))
     .returning();
 

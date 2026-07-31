@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { SignaturePad } from './SignaturePad';
-import { approveP2HReport, rejectP2HReport } from '@/app/actions/p2h';
+import { approveP2HReport, rejectP2HReport } from '@/actions/p2h';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, XCircle, Clock, AlertTriangle, Loader2 } from 'lucide-react';
 
