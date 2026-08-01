@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ScanLine, History, ClipboardList, Truck, Settings, BarChart2, Activity, LogOut, User } from 'lucide-react';
+import { Home, ScanLine, History, Truck, BarChart2, User, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 
@@ -37,15 +37,6 @@ export function BottomNav({ role }: BottomNavProps) {
       navItems = [
         { label: 'Beranda', href: '/dashboard', icon: Home },
         { label: 'Laporan', href: '/reports', icon: BarChart2 },
-        { label: 'Profil', href: '/profile', icon: User },
-      ];
-      break;
-    case 'admin':
-      navItems = [
-        { label: 'Beranda', href: '/dashboard', icon: Home },
-        { label: 'Pengguna', href: '/admin/users', icon: ClipboardList },
-        { label: 'Unit', href: '/admin/units', icon: Truck },
-        { label: 'Master', href: '/admin/checklist', icon: ClipboardList },
         { label: 'Profil', href: '/profile', icon: User },
       ];
       break;

@@ -6,12 +6,20 @@ import { DosenDashboard } from '@/components/dashboard/DosenDashboard';
 import { NotificationBell } from '@/components/profile/NotificationBell';
 import Link from 'next/link';
 import { Settings, User } from 'lucide-react';
+import { db } from '@/db';
+import { users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export default async function DashboardPage() {
   const session = await auth();
   const role = session?.user?.role;
   const userName = session?.user?.name || 'User';
-  const avatarUrl = (session?.user as unknown as Record<string, unknown>)?.avatarUrl as string || '';
+
+  let avatarUrl = '';
+  if (session?.user?.id) {
+    const rows = await db.select({ avatarUrl: users.avatarUrl }).from(users).where(eq(users.id, parseInt(session.user.id)));
+    avatarUrl = rows[0]?.avatarUrl || '';
+  }
 
 const roleLabels: Record<string, string> = {
   operator: 'Mahasiswa',

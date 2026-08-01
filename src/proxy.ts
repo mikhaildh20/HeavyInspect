@@ -8,11 +8,12 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth?.user;
   const isAuthPage = req.nextUrl.pathname.startsWith('/login');
   const isChangePasswordPage = req.nextUrl.pathname.startsWith('/change-password');
+  const isAdminPage = req.nextUrl.pathname.startsWith('/admin');
   const mustChangePassword = (req.auth?.user as unknown as Record<string, unknown>)?.mustChangePassword === true;
+  const role = (req.auth?.user as unknown as Record<string, unknown>)?.role;
 
   if (isAuthPage) {
     if (isLoggedIn) {
-      const role = (req.auth?.user as unknown as Record<string, unknown>)?.role;
       if (role === 'admin') {
         return NextResponse.redirect(new URL('/admin', req.nextUrl));
       }
@@ -34,10 +35,17 @@ export default auth((req) => {
   }
 
   if (!mustChangePassword && isChangePasswordPage) {
-    const role = (req.auth?.user as unknown as Record<string, unknown>)?.role;
     if (role === 'admin') {
       return NextResponse.redirect(new URL('/admin', req.nextUrl));
     }
+    return NextResponse.redirect(new URL('/dashboard', req.nextUrl));
+  }
+
+  if (role === 'admin' && !isAdminPage) {
+    return NextResponse.redirect(new URL('/admin', req.nextUrl));
+  }
+
+  if (role !== 'admin' && isAdminPage) {
     return NextResponse.redirect(new URL('/dashboard', req.nextUrl));
   }
 

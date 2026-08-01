@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Box, ClipboardList, ArrowLeft, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Box, ClipboardList, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 
@@ -19,7 +19,7 @@ export function AdminSidebar() {
 
   return (
     <>
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-gray-900 border-r border-gray-800 z-50">
+      <aside className="flex flex-col w-64 fixed inset-y-0 bg-gray-900 border-r border-gray-800 z-50">
         <div className="flex flex-col flex-1 min-h-0">
           <div className="px-6 py-5 border-b border-gray-800">
             <Link href="/admin" className="flex items-center gap-3">
@@ -55,13 +55,6 @@ export function AdminSidebar() {
           </nav>
 
           <div className="px-3 py-4 border-t border-gray-800 space-y-1">
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
-            >
-              <ArrowLeft size={18} />
-              Kembali ke App
-            </Link>
             <button
               onClick={() => setShowLogoutModal(true)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-gray-800 transition-colors w-full text-left"

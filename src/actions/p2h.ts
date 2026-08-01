@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db';
-import { p2hReports, p2hResults, units, users, checklistParameters } from '@/db/schema';
+import { p2hReports, p2hResults, units, users, checklistParameters, fluidAdditions } from '@/db/schema';
 import { eq, and, isNull } from 'drizzle-orm';
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
@@ -11,8 +11,13 @@ import { pushNotification } from './notifications';
 
 export async function submitP2HReport(payload: {
   unitCode: string;
-  smr: string;
-  checklist: Record<string, { status: string; photo?: string | null }>;
+  hm: string;
+  serialNumber: string;
+  woJono: string;
+  zone: string;
+  inspectionStart: string;
+  checklist: Record<string, { status: string; photo?: string | null; priorityCondition?: string | null; actionCode?: string | null; notes?: string | null }>;
+  fluids: { type: string; quantity: number }[];
   signature: string;
   gpsLatitude: number | null;
   gpsLongitude: number | null;
@@ -40,15 +45,15 @@ export async function submitP2HReport(payload: {
   }
 
   // HM Validation (BR-002)
-  const newSmr = Number(payload.smr);
-  if (isNaN(newSmr) || newSmr < 0) {
+  const newHm = Number(payload.hm);
+  if (isNaN(newHm) || newHm < 0) {
     return { error: 'HM harus berupa angka positif' };
   }
-  if (newSmr < unit.lastSmr) {
+  if (newHm < unit.lastSmr) {
     return { error: `Nilai HM tidak boleh lebih rendah dari HM sebelumnya (${unit.lastSmr})` };
   }
 
-  await db.update(units).set({ lastSmr: newSmr }).where(eq(units.id, unit.id));
+  await db.update(units).set({ lastSmr: newHm }).where(eq(units.id, unit.id));
 
   // Create Report
   const reportRes = await db.insert(p2hReports).values({
@@ -56,6 +61,11 @@ export async function submitP2HReport(payload: {
     operatorId: operator.id,
     reportDate: new Date().toISOString(),
     status: 'Submitted',
+    hm: newHm,
+    serialNumber: payload.serialNumber || unit.serialNumber,
+    woJono: payload.woJono || unit.woJono,
+    zone: payload.zone || unit.zone,
+    inspectionStart: payload.inspectionStart,
     operatorSig: payload.signature,
     gpsLatitude: payload.gpsLatitude,
     gpsLongitude: payload.gpsLongitude,
@@ -80,9 +90,25 @@ export async function submitP2HReport(payload: {
       reportId: report.id,
       parameterId: param.id,
       condition: val.status === 'G' ? 'OK' : 'NOT OK',
+      conditionCode: val.status as 'G' | 'B' | 'U',
+      priorityCondition: val.priorityCondition || null,
+      actionCode: val.actionCode || null,
       photoUrl: val.photo || null,
-      notes: val.status,
+      notes: val.notes || null,
     });
+  }
+
+  if (payload.fluids && payload.fluids.length > 0) {
+    const validFluids = payload.fluids.filter(f => f.type && f.quantity > 0);
+    if (validFluids.length > 0) {
+      await db.insert(fluidAdditions).values(
+        validFluids.map(f => ({
+          reportId: report.id,
+          fluidType: f.type,
+          quantity: f.quantity,
+        }))
+      );
+    }
   }
 
   revalidatePath('/dashboard');

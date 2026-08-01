@@ -21,7 +21,6 @@ export function UserForm({ user, onSave, onCancel }: UserFormProps) {
     username: user?.username || '',
     fullName: user?.fullName || '',
     role: user?.role || 'operator',
-    password: '',
   });
   const [loading, setLoading] = useState(false);
 
@@ -94,16 +93,9 @@ export function UserForm({ user, onSave, onCancel }: UserFormProps) {
         </div>
 
         {!user && (
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Password</label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
-              required
-            />
-          </div>
+          <p className="text-xs text-yellow-400 bg-yellow-900/20 border border-yellow-700/50 rounded-lg px-3 py-2">
+            Password akan otomatis dibuatkan. User harus mengubah password saat login pertama kali.
+          </p>
         )}
 
         <div className="flex gap-4 pt-4">

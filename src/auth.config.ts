@@ -11,16 +11,17 @@ export const authConfig = {
         token.id = user.id;
         token.role = user.role;
         token.mustChangePassword = (user as unknown as Record<string, unknown>).mustChangePassword;
-        token.avatarUrl = (user as unknown as Record<string, unknown>).avatarUrl || '';
+        // avatarUrl NOT stored in JWT to prevent cookie bloat (base64 data URIs)
       }
       return token;
     },
     session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.name = token.name as string;
         session.user.role = token.role as string;
         (session.user as unknown as Record<string, unknown>).mustChangePassword = token.mustChangePassword;
-        (session.user as unknown as Record<string, unknown>).avatarUrl = token.avatarUrl || '';
+        // avatarUrl fetched from DB where needed, not from JWT
       }
       return session;
     },

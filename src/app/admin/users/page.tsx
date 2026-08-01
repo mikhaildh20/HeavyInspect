@@ -18,6 +18,8 @@ export default async function AdminUsersPage() {
     username: users.username,
     fullName: users.fullName,
     role: users.role,
+    mustChangePassword: users.mustChangePassword,
+    generatedPassword: users.generatedPassword,
   })
   .from(users)
   .where(and(isNull(users.deletedAt), not(eq(users.id, Number(currentUserId)))))

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { UserForm } from './UserForm';
-import { Plus, Edit2, Trash2, HardHat, BookOpen, Shield, Users, KeyRound, Copy, Check, Upload, Download } from 'lucide-react';
+import { Plus, Edit2, Trash2, HardHat, BookOpen, Shield, Users, KeyRound, Copy, Check, Upload, Download, Eye, EyeOff } from 'lucide-react';
 import { ConfirmModal } from '@/components/layout/ConfirmModal';
 import * as XLSX from 'xlsx';
 
@@ -11,6 +11,8 @@ interface User {
   username: string;
   fullName: string;
   role: string;
+  mustChangePassword: boolean | null;
+  generatedPassword: string | null;
 }
 
 interface UserListProps {
@@ -24,6 +26,7 @@ export function UserList({ users: initialUsers }: UserListProps) {
   const [generatedPassword, setGeneratedPassword] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [resettingId, setResettingId] = useState<number | null>(null);
+  const [showingPasswordId, setShowingPasswordId] = useState<number | null>(null);
   const [importing, setImporting] = useState(false);
   const [importResults, setImportResults] = useState<{ created: { username: string; fullName: string; role: string; generatedPassword: string }[]; errors: { row: number; message: string }[] } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -64,7 +67,7 @@ export function UserList({ users: initialUsers }: UserListProps) {
         try {
           const res = await fetch(`/api/admin/users/${userId}`, { method: 'DELETE' });
           if (res.ok) {
-            setUsers(users.filter(u => u.id !== userId));
+            setUsers(prev => prev.filter(u => u.id !== userId));
           }
         } catch (error) {
           console.error('Delete error:', error);
@@ -75,11 +78,11 @@ export function UserList({ users: initialUsers }: UserListProps) {
     });
   };
 
-  const handleSave = (savedUser: { id?: number; username: string; fullName: string; role: string; generatedPassword?: string }) => {
+  const handleSave = (savedUser: { id?: number; username: string; fullName: string; role: string; generatedPassword?: string; mustChangePassword?: boolean }) => {
     if (editingUser && savedUser.id) {
-      setUsers(users.map(u => u.id === savedUser.id ? { ...savedUser, id: savedUser.id } : u));
+      setUsers(users.map(u => u.id === savedUser.id ? { ...u, ...savedUser, id: savedUser.id } : u));
     } else if (savedUser.id) {
-      setUsers([...users, { ...savedUser, id: savedUser.id }]);
+      setUsers([...users, { ...savedUser, id: savedUser.id, mustChangePassword: savedUser.mustChangePassword ?? false, generatedPassword: savedUser.generatedPassword ?? null }]);
     }
     if (savedUser.generatedPassword) {
       setGeneratedPassword(savedUser.generatedPassword);
@@ -195,7 +198,10 @@ export function UserList({ users: initialUsers }: UserListProps) {
     const wb = XLSX.utils.book_new();
     const wsData = [
       ['Username', 'Nama Lengkap', 'Role'],
-      ['operator1', 'Contoh Operator', 'operator'],
+      ['operator1', 'Budi Santoso', 'operator'],
+      ['operator2', 'Siti Rahayu', 'operator'],
+      ['leader1', 'Ahmad Hidayat', 'leader'],
+      ['supervisor1', 'Dr. Dewi Lestari', 'supervisor'],
     ];
     const ws = XLSX.utils.aoa_to_sheet(wsData);
     ws['!cols'] = [
@@ -339,6 +345,7 @@ export function UserList({ users: initialUsers }: UserListProps) {
                 <th className="px-4 py-3 text-sm font-medium text-gray-400">Nama</th>
                 <th className="px-4 py-3 text-sm font-medium text-gray-400">Username</th>
                 <th className="px-4 py-3 text-sm font-medium text-gray-400">Role</th>
+                <th className="px-4 py-3 text-sm font-medium text-gray-400">Password</th>
                 <th className="px-4 py-3 text-sm font-medium text-gray-400 text-right">Aksi</th>
               </tr>
             </thead>
@@ -352,6 +359,33 @@ export function UserList({ users: initialUsers }: UserListProps) {
                       {getRoleIcon(user.role)}
                       <span className="text-sm">{getRoleLabel(user.role)}</span>
                     </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.mustChangePassword && user.generatedPassword ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono text-yellow-400">
+                          {showingPasswordId === user.id ? user.generatedPassword : '••••••••'}
+                        </span>
+                        <button
+                          onClick={() => setShowingPasswordId(showingPasswordId === user.id ? null : user.id)}
+                          className="p-1 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+                          title={showingPasswordId === user.id ? 'Sembunyikan' : 'Tampilkan'}
+                        >
+                          {showingPasswordId === user.id ? <EyeOff size={12} /> : <Eye size={12} />}
+                        </button>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(user.generatedPassword!);
+                          }}
+                          className="p-1 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+                          title="Salin password"
+                        >
+                          <Copy size={12} />
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-500">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
@@ -381,7 +415,7 @@ export function UserList({ users: initialUsers }: UserListProps) {
               ))}
               {users.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
                     Belum ada data pengguna.
                   </td>
                 </tr>

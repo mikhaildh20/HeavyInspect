@@ -1,7 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, Clock, XCircle, User, Calendar, FileText, AlertTriangle, X, MapPin, Droplets, Pen } from 'lucide-react';
+import { CheckCircle, Clock, XCircle, User, Calendar, FileText, AlertTriangle, X, MapPin, Droplets, Pen, Hash, Gauge } from 'lucide-react';
+
+const CONDITION_LABELS: Record<string, string> = { G: 'Baik', B: 'Buruk', U: 'Ganti' };
+const CONDITION_COLORS: Record<string, string> = { G: 'bg-green-600', B: 'bg-yellow-500', U: 'bg-red-600' };
+
+const ACTION_LABELS: Record<string, string> = {
+  '1': 'Tindakan Sekarang',
+  '2': 'Tindakan saat Ganti Shift',
+  '3': 'Tindakan pada PS Berikutnya',
+  '4': 'Tindakan pada Jadwal Backlog',
+};
 
 interface Signature {
   data: string | null;
@@ -18,8 +28,10 @@ interface ReportResult {
   category: string | null;
   description: string | null;
   condition: string;
+  conditionCode: string | null;
   photoUrl: string | null;
   notes: string | null;
+  actionCode: string | null;
 }
 
 interface ReportDetailProps {
@@ -27,6 +39,11 @@ interface ReportDetailProps {
     id: number;
     status: string;
     reportDate: string;
+    hm: number | null;
+    serialNumber: string | null;
+    woJono: string | null;
+    zone: string | null;
+    inspectionStart: string | null;
     operatorSig: string | null;
     leaderSig: string | null;
     supervisorSig: string | null;
@@ -122,9 +139,10 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
     });
   };
 
+  const hasUnitExtra = report.serialNumber || report.woJono || report.zone || report.inspectionStart || report.hm;
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      {/* Header Card */}
       <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
         <div className="flex items-start justify-between mb-4">
           <div>
@@ -134,7 +152,6 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
           {getStatusBadge()}
         </div>
 
-        {/* Info Grid */}
         <div className="grid grid-cols-2 gap-4 text-sm mt-6">
           <div className="flex items-center gap-3">
             <User className="text-gray-400" size={18} />
@@ -152,7 +169,41 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
           </div>
         </div>
 
-        {/* GPS Data */}
+        {hasUnitExtra && (
+          <div className="mt-4 p-3 bg-gray-700/50 rounded-lg grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+            {report.hm != null && (
+              <div>
+                <p className="text-gray-400 flex items-center gap-1"><Gauge size={12} /> HM</p>
+                <p className="text-white font-medium">{report.hm.toLocaleString()}</p>
+              </div>
+            )}
+            {report.serialNumber && (
+              <div>
+                <p className="text-gray-400 flex items-center gap-1"><Hash size={12} /> Serial Number</p>
+                <p className="text-white font-medium">{report.serialNumber}</p>
+              </div>
+            )}
+            {report.woJono && (
+              <div>
+                <p className="text-gray-400">WO/JO No</p>
+                <p className="text-white font-medium">{report.woJono}</p>
+              </div>
+            )}
+            {report.zone && (
+              <div>
+                <p className="text-gray-400">Zone</p>
+                <p className="text-white font-medium">{report.zone}</p>
+              </div>
+            )}
+            {report.inspectionStart && (
+              <div>
+                <p className="text-gray-400">Mulai Inspeksi</p>
+                <p className="text-white font-medium">{report.inspectionStart}</p>
+              </div>
+            )}
+          </div>
+        )}
+
         {report.gpsLatitude && report.gpsLongitude && (
           <div className="mt-4 p-3 bg-gray-700/50 rounded-lg">
             <div className="flex items-center gap-2 text-gray-300 mb-2">
@@ -168,7 +219,6 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
           </div>
         )}
 
-        {/* Rejection Reason */}
         {report.rejectionReason && (
           <div className="mt-4 p-4 bg-red-900/30 border border-red-700 rounded-lg">
             <div className="flex items-center gap-2 text-red-400 mb-2">
@@ -179,14 +229,12 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
           </div>
         )}
 
-        {/* Timestamps */}
         <div className="mt-4 pt-4 border-t border-gray-700 text-xs text-gray-500">
           <p>Dibuat: {formatDateTime(report.createdAt)}</p>
           <p>Diperbarui: {formatDateTime(report.updatedAt)}</p>
         </div>
       </div>
 
-      {/* Signatures */}
       <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
         <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
           <Pen className="text-primary" size={20} />
@@ -220,7 +268,6 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
         </div>
       </div>
 
-      {/* Fluid Additions */}
       {fluidAdditions && fluidAdditions.length > 0 && (
         <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
           <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
@@ -238,7 +285,6 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
         </div>
       )}
 
-      {/* Inspection Results */}
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-white flex items-center gap-2">
           <FileText className="text-primary" size={20} />
@@ -248,18 +294,23 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
           <div key={idx} className="bg-gray-800 p-4 rounded-xl border border-gray-700">
             <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
               <div className="flex-1">
-                <p className="text-xs text-gray-500 mb-1">Parameter {res.category}</p>
+                <p className="text-xs text-gray-500 mb-1">{res.category}</p>
                 <p className="text-white font-medium">{res.description}</p>
-                <p className="text-sm text-gray-400 mt-1">
-                  Kondisi: {res.notes === 'G' ? 'Baik' : res.notes === 'B' ? 'Buruk' : res.condition}
-                </p>
+                {(res.notes || res.actionCode) && (
+                  <div className="mt-2 space-y-1">
+                    {res.notes && <p className="text-xs text-gray-400">Catatan: {res.notes}</p>}
+                    {res.actionCode && ACTION_LABELS[res.actionCode] && (
+                      <p className="text-xs text-yellow-400">Aksi: {ACTION_LABELS[res.actionCode]}</p>
+                    )}
+                  </div>
+                )}
               </div>
               <span
-                className={`px-4 py-2 font-bold rounded-lg text-center w-16 ${
-                  res.condition === 'OK' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+                className={`px-4 py-2 font-bold rounded-lg text-center min-w-[3rem] text-white ${
+                  CONDITION_COLORS[res.conditionCode || ''] || (res.condition === 'OK' ? 'bg-green-600' : 'bg-red-600')
                 }`}
               >
-                {res.condition === 'OK' ? 'G' : 'B'}
+                {CONDITION_LABELS[res.conditionCode || ''] || (res.condition === 'OK' ? 'Baik' : 'Buruk')}
               </span>
             </div>
             {res.photoUrl && res.photoUrl !== 'base64_photo_mock' && (
@@ -282,7 +333,6 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
         ))}
       </div>
 
-      {/* Photo Preview Modal */}
       {previewPhoto && (
         <div
           className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"

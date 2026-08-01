@@ -36,7 +36,12 @@ const statusLabels: Record<string, string> = {
 export default async function AdminDashboardPage() {
   const session = await auth();
   const userName = session?.user?.name || 'Admin';
-  const avatarUrl = (session?.user as unknown as Record<string, unknown>)?.avatarUrl as string || '';
+
+  let avatarUrl = '';
+  if (session?.user?.id) {
+    const rows = await db.select({ avatarUrl: users.avatarUrl }).from(users).where(eq(users.id, parseInt(session.user.id)));
+    avatarUrl = rows[0]?.avatarUrl || '';
+  }
 
   // --- Stats ---
   const [unitCount] = await db

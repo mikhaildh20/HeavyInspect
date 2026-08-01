@@ -59,7 +59,7 @@ export default async function ChecksheetPage({ params }: { params: Promise<{ uni
 
       <div className="p-4 md:p-6 max-w-4xl mx-auto">
         <div className="bg-gray-800 rounded-xl p-4 border border-gray-700 mb-6">
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
             <div>
               <p className="text-gray-400">Kode Unit</p>
               <p className="font-semibold text-white">{unit.unitCode}</p>
@@ -70,12 +70,36 @@ export default async function ChecksheetPage({ params }: { params: Promise<{ uni
             </div>
             <div>
               <p className="text-gray-400">Tanggal</p>
-              <p className="font-semibold text-white">{new Date().toLocaleDateString('en-ID')}</p>
+              <p className="font-semibold text-white">{new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
             </div>
             <div>
               <p className="text-gray-400">SMR Terakhir</p>
               <p className="font-semibold text-white">{unit.lastSmr.toLocaleString()}</p>
             </div>
+            {unit.serialNumber && (
+              <div>
+                <p className="text-gray-400">Serial Number</p>
+                <p className="font-semibold text-white">{unit.serialNumber}</p>
+              </div>
+            )}
+            {unit.woJono && (
+              <div>
+                <p className="text-gray-400">WO/JO No</p>
+                <p className="font-semibold text-white">{unit.woJono}</p>
+              </div>
+            )}
+            {unit.zone && (
+              <div>
+                <p className="text-gray-400">Zone</p>
+                <p className="font-semibold text-white">{unit.zone}</p>
+              </div>
+            )}
+            {unit.inspectionStart && (
+              <div>
+                <p className="text-gray-400">Inspection Start</p>
+                <p className="font-semibold text-white">{unit.inspectionStart}</p>
+              </div>
+            )}
           </div>
         </div>
 

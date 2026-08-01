@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { db } from '@/db';
-import { p2hReports, p2hResults, units, users, checklistParameters } from '@/db/schema';
+import { p2hReports, p2hResults, units, users, checklistParameters, fluidAdditions } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { ReviewForm } from '@/components/p2h/ReviewForm';
 import { ChevronLeft } from 'lucide-react';
@@ -37,14 +37,18 @@ export default async function ReviewPage({ params }: { params: Promise<{ reportI
   // Fetch results
   const results = await db.select({
     condition: p2hResults.condition,
+    conditionCode: p2hResults.conditionCode,
     photoUrl: p2hResults.photoUrl,
     notes: p2hResults.notes,
+    actionCode: p2hResults.actionCode,
     category: checklistParameters.category,
     description: checklistParameters.description,
   })
   .from(p2hResults)
   .leftJoin(checklistParameters, eq(p2hResults.parameterId, checklistParameters.id))
   .where(eq(p2hResults.reportId, id));
+
+  const fluids = await db.select().from(fluidAdditions).where(eq(fluidAdditions.reportId, id));
 
   return (
     <main className="min-h-screen bg-background pb-24">
@@ -64,6 +68,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ reportI
           unit={unit} 
           operator={operator} 
           results={results} 
+          fluidAdditions={fluids}
           role={session.user.role} 
         />
       </div>

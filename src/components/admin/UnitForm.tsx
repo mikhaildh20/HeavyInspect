@@ -30,7 +30,6 @@ export function UnitForm({ unit, onSave, onCancel }: UnitFormProps) {
     woJono: unit?.woJono || '',
     zone: unit?.zone || '',
     inspectionStart: unit?.inspectionStart || '',
-    isActive: unit?.isActive ?? 1,
   });
   const [loading, setLoading] = useState(false);
 
@@ -89,30 +88,16 @@ export function UnitForm({ unit, onSave, onCancel }: UnitFormProps) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">HM Terakhir</label>
-            <input
-              type="number"
-              value={formData.lastSmr}
-              onChange={(e) => setFormData({ ...formData, lastSmr: parseFloat(e.target.value) || 0 })}
-              className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
-              step="0.1"
-              min="0"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Status</label>
-              <select
-                value={formData.isActive ? 'true' : 'false'}
-                onChange={(e) => setFormData({ ...formData, isActive: e.target.value === 'true' })}
-                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
-              >
-                <option value="true">Aktif</option>
-                <option value="false">Nonaktif</option>
-              </select>
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-400 mb-2">HM Terakhir</label>
+          <input
+            type="number"
+            value={formData.lastSmr}
+            onChange={(e) => setFormData({ ...formData, lastSmr: parseFloat(e.target.value) || 0 })}
+            className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+            step="0.1"
+            min="0"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">

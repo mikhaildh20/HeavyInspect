@@ -155,19 +155,30 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
 
     if (!signature) return;
 
-    const checklistData: Record<string, { status: string; photo?: string | null }> = {};
+    const checklistData: Record<string, { status: string; photo?: string | null; notes?: string | null; actionCode?: string | null }> = {};
     for (const item of checklist) {
       const state = results[item.id];
       checklistData[String(item.id)] = {
         status: state?.condition || 'U',
         photo: state?.photo || null,
+        notes: state?.note || null,
+        actionCode: state?.priority ? String(state.priority) : null,
       };
     }
 
+    const validFluids = fluids
+      .filter(f => f.type && f.quantity)
+      .map(f => ({ type: f.type, quantity: Number(f.quantity) || 0 }));
+
     const res = await submitP2HReport({
       unitCode: unitId,
-      smr,
+      hm: smr,
+      serialNumber,
+      woJono,
+      zone,
+      inspectionStart: inspectionTime,
       checklist: checklistData,
+      fluids: validFluids,
       signature,
       gpsLatitude: latitude,
       gpsLongitude: longitude,

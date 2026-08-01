@@ -19,7 +19,6 @@ export default async function ChangePasswordPage() {
     }
 
     await changePassword(session!.user!.id!, newPassword);
-    redirect('/dashboard');
   }
 
   return (
