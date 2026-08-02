@@ -31,16 +31,6 @@ const CONDITION_OPTIONS = [
   { code: 'U', label: 'Replace', color: 'bg-red-500 text-white' },
 ] as const;
 
-const PRIORITY_CONDITIONS = [
-  { code: 1, label: 'Leaking' },
-  { code: 2, label: 'Broken' },
-  { code: 3, label: 'Missing' },
-  { code: 4, label: 'Loose' },
-  { code: 5, label: 'Worn' },
-  { code: 6, label: 'Crack' },
-  { code: 7, label: 'Others' },
-];
-
 const ACTION_CODES = [
   { code: 1, label: 'Action now' },
   { code: 2, label: 'Action at change shift' },
@@ -308,12 +298,6 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
             <p className="text-gray-300"><span className="text-green-400 font-bold">G</span> = Good Condition</p>
             <p className="text-gray-300"><span className="text-yellow-400 font-bold">B</span> = Bad Condition</p>
             <p className="text-gray-300"><span className="text-red-400 font-bold">U</span> = Replace</p>
-          </div>
-          <div>
-            <p className="font-bold text-white mb-1">Priority Condition</p>
-            {PRIORITY_CONDITIONS.map(p => (
-              <p key={p.code} className="text-gray-300">{p.code} = {p.label}</p>
-            ))}
           </div>
           <div>
             <p className="font-bold text-white mb-1">Action</p>
