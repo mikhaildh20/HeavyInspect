@@ -4,9 +4,19 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di sini. Format p
 
 [Unreleased]
 
-Added
+Removed
 
-* [Kosong / Belum ada perubahan]
+* Digital Signature: Hapus seluruh mekanisme tanda tangan digital (operator_sig, leader_sig, supervisor_sig) dari schema, actions, dan komponen. Approval sekarang hanya menggunakan tombol approve/tolak.
+* SignaturePad Component: Hapus komponen SignaturePad.tsx dan file yang terkait di public/uploads/signatures/.
+* Sequential Signing BR-008: Ganti rules sequential signing menjadi sequential approval tanpa tanda tangan.
+* Digital Signature PRD-002: Ganti requirement Digital Signature menjadi Button-Only Approval.
+
+Changed
+
+* Approval Flow: Supervisor dan Leader cukup menekan tombol approve — tidak perlu tanda tangan digital.
+* Reject Flow: Reject wajib menyertakan alasan (mandatory reason) yang dikirim ke notifikasi.
+* Report Detail: Hapus tampilan tanda tangan digital dari detail laporan.
+* Review Form: Approve button langsung tanpa SignaturePad, status approval berdasarkan audit_log.
 
 [0.16.0] - 2026-08-01
 

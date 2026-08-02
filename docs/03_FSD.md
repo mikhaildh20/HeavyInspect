@@ -16,7 +16,7 @@ Istilah	Definisi
 P2H	Pemeliharaan dan Pemeriksaan Harian: Prosedur pemeriksaan visual dan fungsional unit alat berat sebelum operasional dimulai untuk menjamin keselamatan kerja.
 SMR	Service Meter Reading: Indikator akumulasi jam operasional mesin pada alat berat (serupa dengan odometer pada kendaraan ringan).
 HeavyInspect	Nama sistem aplikasi manajemen aset dan inspeksi digital yang menjadi objek spesifikasi ini.
-Sequential Signing	Protokol otorisasi di mana tanda tangan digital harus dibubuhkan secara berurutan sesuai hierarki organisasi (Mechanic -> Leader -> Supervisor).
+Sequential Approval	Protokol otorisasi di mana approval harus dilakukan secara berurutan sesuai hierarki organisasi (Mechanic -> Leader -> Supervisor).
 Submitted	Status laporan setelah mekanik menyelesaikan inspeksi dan menekan tombol submit final.
 Fully Approved	Status akhir laporan setelah melewati seluruh tahapan verifikasi dalam hierarki persetujuan.
 
@@ -56,8 +56,8 @@ BR-002	Validasi SMR: Nilai SMR input (SMR_i) harus >= SMR_last_recorded. Validas
 
 3. Modul Fungsional: Persetujuan (Approval)
 
-Mahasiswa (Mechanic): Melakukan inspeksi fisik, pengisian form, dan tanda tangan awal [2.2, 5].
-Instruktur (Leader): Melakukan verifikasi lapangan dan tanda tangan tingkat kedua [2.2].
+Mahasiswa (Mechanic): Melakukan inspeksi fisik, pengisian form, dan submit laporan [2.2, 5].
+Instruktur (Leader): Melakukan verifikasi lapangan dan approve laporan [2.2].
 Dosen (Supervisor): Melakukan validasi akhir, penilaian (grading), dan persetujuan administratif [2.2].
 
 Purpose: Memastikan hasil inspeksi diverifikasi oleh otoritas yang lebih tinggi sesuai standar operasional.
@@ -92,14 +92,14 @@ Errors: | Code | Condition | User Behaviour | | :--- | :--- | :--- | | ERR-AUTH-
 3.2 Aturan Bisnis (Business Rules) - Persetujuan
 
 ID	Rule	Enforced By	Related Requirement
-BR-008	Sequential Signing: Mekanisme state-gate di mana tombol tanda tangan untuk Supervisor tidak akan aktif/tersedia sebelum kolom leader_signature terisi (Timestamp & UID).	Client & Server	PRD-005
-BR-010	Digital Signature: Setiap aksi persetujuan wajib mencatat payload: {user_id, timestamp, device_id, ip_address, geolocation}. Metadata ini berfungsi sebagai bukti hukum tanda tangan digital.	Server	PRD-006
+BR-008	Sequential Approval: Mekanisme state-gate di mana tombol approve untuk Supervisor tidak akan aktif/tersedia sebelum laporan disetujui oleh Leader.	Client & Server	PRD-005
+BR-010	Audit Logging: Setiap aksi persetujuan wajib mencatat payload: {user_id, timestamp, action, details}. Metadata ini berfungsi sebagai audit trail perubahan status.	Server	PRD-006
 
 4. State Transitions
 
 Entity	From	Event	To	Guard / Side Effect
 P2H_Report	DRAFT	FINALIZE_SUBMIT	SUBMITTED	Trigger BR-001 & BR-002.
-P2H_Report	SUBMITTED	LEADER_APPROVE	PENDING_SUPERVISOR	Mencatat digital signature Leader.
+P2H_Report	SUBMITTED	LEADER_APPROVE	PENDING_SUPERVISOR	Mencatat approval Leader di audit_log.
 P2H_Report	PENDING_SUPERVISOR	SUPERVISOR_APPROVE	FULLY_APPROVED	Laporan dikunci (Read-Only).
 P2H_Report	SUBMITTED	REJECT	DRAFT	Laporan dikembalikan ke mekanik untuk revisi.
 
@@ -120,4 +120,4 @@ BR-001	PRD-001	Table: report_attachments	TEST-P2H-V01
 BR-002	PRD-002	Logic: UnitService.validateSMR()	TEST-P2H-V02
 UC-002	PRD-005	Screen: ApprovalDashboard, API: PUT /p2h/approve	TEST-APP-001
 BR-008	PRD-005	Logic: ApprovalWorkflow.checkSequence()	TEST-APP-V01
-BR-010	PRD-006	Table: signatures_metadata	TEST-SEC-001
+BR-010	PRD-006	Table: audit_log	TEST-SEC-001

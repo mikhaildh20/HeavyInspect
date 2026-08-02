@@ -26,7 +26,7 @@ Database	SQLite 3	Latest	Zero-configuration, performa tinggi untuk operasi read-
 Module	Owns	Depends on	Public interface	Forbidden responsibility
 Asset	Spesifikasi teknis unit (Komatsu PC 200-8), status kesehatan alat.	-	getUnitDetail, updateAssetStatus	Dilarang mengubah status Approval secara langsung.
 Inspection	Logika form P2H (Engine, Hydraulic), validasi ambang batas teknis.	Asset	submitInspection, getInspectionHistory	Dilarang akses SQL langsung ke tabel Asset atau User; wajib melalui antarmuka publik.
-Approval	Alur kerja otorisasi, verifikasi tanda tangan digital supervisor.	Inspection	processApproval, getPendingTasks	Dilarang mengubah data spesifikasi teknis pada Modul Asset.
+Approval	Alur kerja otorisasi, approval by button tanpa tanda tangan.	Inspection	processApproval, getPendingTasks	Dilarang mengubah data spesifikasi teknis pada Modul Asset.
 
 4. Key flows and failure handling
 

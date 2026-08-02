@@ -16,9 +16,8 @@ export async function submitP2HReport(payload: {
   woJono: string;
   zone: string;
   inspectionStart: string;
-  checklist: Record<string, { status: string; photo?: string | null; priorityCondition?: string | null; actionCode?: string | null; notes?: string | null }>;
+  checklist: Record<string, { status: string; photo?: string | null; actionCode?: string | null; notes?: string | null }>;
   fluids: { type: string; quantity: number }[];
-  signature: string;
   gpsLatitude: number | null;
   gpsLongitude: number | null;
   gpsAccuracy: number | null;
@@ -66,7 +65,6 @@ export async function submitP2HReport(payload: {
     woJono: payload.woJono || unit.woJono,
     zone: payload.zone || unit.zone,
     inspectionStart: payload.inspectionStart,
-    operatorSig: payload.signature,
     gpsLatitude: payload.gpsLatitude,
     gpsLongitude: payload.gpsLongitude,
     gpsAccuracy: payload.gpsAccuracy,
@@ -91,7 +89,6 @@ export async function submitP2HReport(payload: {
       parameterId: param.id,
       condition: val.status === 'G' ? 'OK' : 'NOT OK',
       conditionCode: val.status as 'G' | 'B' | 'U',
-      priorityCondition: val.priorityCondition || null,
       actionCode: val.actionCode || null,
       photoUrl: val.photo || null,
       notes: val.notes || null,
@@ -123,7 +120,7 @@ export async function submitP2HReport(payload: {
   return { success: true, reportId: report.id };
 }
 
-export async function approveP2HReport(reportId: number, signature: string) {
+export async function approveP2HReport(reportId: number) {
    const session = await auth();
    if (!session?.user?.id) throw new Error('Unauthorized');
    const role = session.user.role;
@@ -138,7 +135,6 @@ export async function approveP2HReport(reportId: number, signature: string) {
       }
       await db.update(p2hReports).set({
          status: 'PendingSupervisor',
-         leaderSig: signature,
          updatedAt: new Date(),
       }).where(eq(p2hReports.id, reportId));
       
@@ -148,12 +144,8 @@ export async function approveP2HReport(reportId: number, signature: string) {
       if (report.status !== 'PendingSupervisor') {
         throw new Error('Laporan memerlukan persetujuan Instruktur terlebih dahulu');
       }
-      if (!report.leaderSig) {
-        throw new Error('Tanda tangan Instruktur diperlukan sebelum persetujuan Dosen');
-      }
       await db.update(p2hReports).set({
          status: 'Approved',
-         supervisorSig: signature,
          updatedAt: new Date(),
       }).where(eq(p2hReports.id, reportId));
       

@@ -18,7 +18,7 @@ Risiko Kualitas Utama
 Sasaran Utama (Program Goals)
 
 * Zero Data Loss: Menjamin persistensi data 100% melalui mekanisme local storage persistence dan strategi retry otomatis saat konektivitas intermiten di area bengkel. Validasi dilakukan pada level sinkronisasi client-side ke server-side.
-* Integrity of Signature: Memastikan rantai kepercayaan (chain of trust) pada tanda tangan berjenjang. Sistem harus mengunci status laporan segera setelah tanda tangan dibubuhkan dan menolak akses tanda tangan jika urutan otoritas (Mahasiswa -> Instruktur -> Dosen) dilanggar.
+* Integrity of Approval: Memastikan rantai kepercayaan (chain of trust) pada approval berjenjang. Sistem harus mengunci status laporan segera setelah approval diberikan dan menolak approval jika urutan otoritas (Mahasiswa -> Instruktur -> Dosen) dilanggar.
 
 Cakupan Pengujian
 
@@ -44,7 +44,7 @@ Layer	Purpose	Tool / method	Required for
 Unit Testing	Validasi logika bisnis isolasi (Fungsi kalkulasi & utilitas).	Vitest	Semua modul logika bisnis.
 Integration Testing	Contract Testing untuk memastikan integritas skema API antara frontend dan backend.	Vitest	Modul API, Middleware, dan Database Repository.
 End-to-End (E2E)	Validasi Critical User Journey dari Scan QR hingga Approval akhir.	Playwright	Alur pemeriksaan unit dan sinkronisasi data.
-Security Testing	Audit otorisasi peran dan proteksi manipulasi parameter ID.	OWASP ZAP / Manual Audit	Endpoint tanda tangan dan upload bukti foto.
+Security Testing	Audit otorisasi peran dan proteksi manipulasi parameter ID.	OWASP ZAP / Manual Audit	Endpoint approval dan upload bukti foto.
 Performance Testing	Memastikan responsivitas sistem saat beban puncak di jam bengkel.	k6	Sinkronisasi batch data P2H oleh banyak user simultan.
 
 5. Tabel Kasus Uji Spesifik (Aturan Bisnis Kritis)
@@ -52,7 +52,7 @@ Performance Testing	Memastikan responsivitas sistem saat beban puncak di jam ben
 ID	Requirement / rule	Preconditions	Steps	Expected result	Type	Priority
 TEST-001	Mandatory Photo (BR-001 / PRD-005)	Mahasiswa di halaman input form pemeriksaan.	1. Isi semua field teks.<br>2. Kosongkan lampiran foto.<br>3. Klik "Submit".	UI menampilkan pesan error; tombol submit dinonaktifkan hingga file diunggah.	Functional	P0
 TEST-002	SMR Validation (BR-002 / PRD-006)	Database mencatat SMR terakhir unit adalah 5000.	1. Input nilai SMR 4900.<br>2. Klik "Next".	Sistem memblokir aksi "Next", menampilkan peringatan logis, dan mencegah penulisan ke database.	Logic	P0
-TEST-003	Sequential Signing (BR-008 / PRD-010)	Laporan telah disubmit Mahasiswa namun signed_at Instruktur NULL.	1. Login sebagai Dosen.<br>2. Buka detail laporan tersebut.	Tombol/fitur tanda tangan Dosen tidak terlihat atau dalam status disabled.	Authorization	P0
+TEST-003	Sequential Approval (BR-008 / PRD-010)	Laporan telah disubmit Mahasiswa namun belum disetujui Instruktur.	1. Login sebagai Dosen.<br>2. Buka detail laporan tersebut.	Tombol/fitur approve Dosen tidak terlihat atau dalam status disabled.	Authorization	P0
 TEST-004	QR Edge Case (BR-005 / PRD-004)	Menggunakan stiker QR unit PC 200-8 yang kusam/rusak 20%.	1. Pindai QR di area minim cahaya (hangar).	Algoritma pemindaian berhasil mengidentifikasi unit tanpa false-negative.	Reliability	P1
 
 6. Pemeriksaan Regresi dan Rilis

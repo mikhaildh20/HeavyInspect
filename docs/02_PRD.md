@@ -21,7 +21,7 @@ Product Requirements Document (PRD): (HeavyInspect)
 * In Scope:
   * Digitalisasi formulir P2H spesifik untuk template teknis unit.
   * Mekanisme otentikasi pengguna dan penandaan lokasi inspeksi.
-  * Fitur validasi input lapangan (foto wajib dan tanda tangan digital).
+  * Fitur validasi input lapangan (foto wajib dan approval by button).
   * Penyimpanan data terpusat dengan kemampuan akses berbasis peran (role-based access control).
   * Implementasi offline-first dengan sinkronisasi otomatis.
 * Explicitly Out of Scope:
@@ -32,8 +32,8 @@ Product Requirements Document (PRD): (HeavyInspect)
 4. Pengguna dan Peran (Users and Roles)
 
 Role	Goals	Permissions / boundaries
-Mahasiswa	Melakukan inspeksi teknis unit secara presisi dan melaporkan kondisi harian.	Membuat entri laporan baru, mengunggah media bukti inspeksi, dan melakukan otentikasi melalui tanda tangan digital pada laporan pribadi.
-Instruktur	Melakukan verifikasi faktual hasil inspeksi di lapangan dan memberikan validasi teknis.	Meninjau laporan mahasiswa secara real-time, menyetujui/menolak laporan, dan membubuhkan tanda tangan verifikator.
+Mahasiswa	Melakukan inspeksi teknis unit secara presisi dan melaporkan kondisi harian.	Membuat entri laporan baru dan mengunggah media bukti inspeksi, lalu submit untuk review.
+Instruktur	Melakukan verifikasi faktual hasil inspeksi di lapangan dan memberikan validasi teknis.	Meninjau laporan mahasiswa secara real-time dan menyetujui/menolak laporan dengan tombol approval.
 Dosen	Memantau perkembangan kompetensi mahasiswa dan mengevaluasi kesehatan unit secara periodik.	Akses read-only ke seluruh riwayat laporan; akses ke dashboard analitik agregat dan laporan individu untuk evaluasi akademik.
 
 5. Perjalanan Pengguna Utama (Core Journeys)
@@ -48,8 +48,8 @@ Happy Path:
 2. Aplikasi menampilkan antarmuka formulir yang telah terkonfigurasi sesuai standar teknis unit.
 3. Mahasiswa mengisi parameter pemeriksaan pada kategori Engine, Hydraulics, Undercarriage, dan Cabin Safety.
 4. Sistem mewajibkan pengambilan foto real-time untuk komponen kritis (misal: level oli mesin, kondisi track shoe).
-5. Mahasiswa melakukan tanda tangan digital sebagai bukti tanggung jawab laporan.
-6. Instruktur memvalidasi input di lokasi dan melakukan approval melalui tanda tangan digital verifikator.
+5. Mahasiswa submit laporan untuk review oleh Instruktur.
+6. Instruktur memvalidasi input di lokasi dan melakukan approval melalui tombol approve.
 7. Sistem melakukan payload submission ke server pusat dan mengubah status laporan menjadi "Validated".
 
 Failure / Edge Paths:
@@ -64,7 +64,7 @@ Success Condition: Laporan tersimpan dalam basis data dengan status terverifikas
 
 ID	Requirement	Priority	Acceptance Criteria	Source / owner
 PRD-001	Validasi Foto Inspeksi	MUST	Sistem harus mengunci akses galeri dan mewajibkan penggunaan kamera langsung untuk pengambilan foto komponen kritis (BR-001).	Stakeholder / BR-001
-PRD-002	Digital Signature	MUST	Implementasi modul tanda tangan digital yang responsif dengan metadata stempel waktu terenkripsi untuk otentikasi (BR-008).	Stakeholder / BR-008
+PRD-002	Button-Only Approval	MUST	Implementasi approval by button tanpa tanda tangan digital. Supervisor dan Leader cukup menekan tombol approve/tolak (BR-008).	Stakeholder / BR-008
 PRD-003	Technical Template	MUST	Formulir harus mencakup pemeriksaan spesifik: Engine Oil Level, Hydraulic Pressure, Swing Machinery, Undercarriage integrity, dan Monitor Panel functions.	Technical Architect
 PRD-004	Offline Data Persistence	MUST	Menggunakan Service Workers atau Local Storage untuk menyimpan data inspeksi selama status offline tanpa kehilangan input pengguna.	Product Management
 PRD-005	Aggregated Dashboard	SHOULD	Menyediakan tampilan grafik tren kerusakan unit untuk peran Dosen guna mendukung keputusan akademik.	Dosen TRPAB
@@ -72,7 +72,7 @@ PRD-005	Aggregated Dashboard	SHOULD	Menyediakan tampilan grafik tren kerusakan u
 7. Batasan dan Asumsi (Constraints and Assumptions)
 
 * 7.1 Business Constraints: Implementasi teknis harus selaras dengan modul praktikum operasional alat berat pada kurikulum TRPAB.
-* 7.2 Compliance / Privacy: Seluruh data tanda tangan dan identitas mahasiswa harus disimpan dengan enkripsi at-rest untuk mencegah manipulasi data nilai praktikum.
+* 7.2 Compliance / Privacy: Seluruh data identitas mahasiswa harus disimpan dengan enkripsi at-rest untuk mencegah manipulasi data nilai praktikum.
 * 7.3 Dependencies: Ketersediaan perangkat seluler berbasis Android/iOS dengan dukungan fitur kamera dan GPS di sisi pengguna.
 * 7.4 Approved Assumptions:
   * Seluruh unit telah dipasangi label QR Code yang tahan cuaca (Keputusan per 2024-05-10).

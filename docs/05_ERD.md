@@ -12,7 +12,7 @@ Tanggal Peninjauan Terakhir	2026-07-31
 
 Skema database HeavyInspect dikembangkan untuk mendukung digitalisasi proses Pemeliharaan dan Pemeriksaan Harian (P2H) alat berat, khususnya unit Komatsu PC 200-8. Struktur data dibangun secara relasional untuk mengikat identitas pengguna (Users), aset fisik (Units), dan parameter standar pemeriksaan (Checklist Parameters).
 
-Alur kerja utama berpusat pada entitas P2H Reports yang berfungsi sebagai kontainer transaksi. Setiap laporan mereferensikan banyak detail temuan (P2H Results) dan pencatatan konsumsi cairan (Fluid Additions). Integritas data dijaga melalui mekanisme status (Draft, Submitted, Approved) yang didukung oleh database-level triggers untuk mencegah modifikasi data pada laporan yang telah disetujui, menjamin validitas audit trail dan verifikasi tanda tangan multi-level.
+Alur kerja utama berpusat pada entitas P2H Reports yang berfungsi sebagai kontainer transaksi. Setiap laporan mereferensikan banyak detail temuan (P2H Results) dan pencatatan konsumsi cairan (Fluid Additions). Integritas data dijaga melalui mekanisme status (Draft, Submitted, Approved) yang didukung oleh database-level triggers untuk mencegah modifikasi data pada laporan yang telah disetujui, menjamin validitas audit trail dan approval bertingkat multi-level.
 
 2. Definisi Entitas (Entities)
 
@@ -87,7 +87,7 @@ Authorization Boundary: Read: All roles; Write: Admin.
 
 2.4 Tabel p2h_reports
 
-Purpose: Header transaksi laporan P2H yang mencatat status dan validasi tanda tangan.
+Purpose: Header transaksi laporan P2H yang mencatat status dan approval.
 
 Column	Type	Null	Default	Constraints/Index	Description
 id	INTEGER	No	-	PK, AUTOINCREMENT	ID unik laporan

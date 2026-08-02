@@ -65,10 +65,10 @@ Formulir menggunakan pendekatan progressive disclosure untuk menjaga kebersihan 
 5. Alur Interaksi dan Aturan Bisnis (Interaction & Business Rules)
 
 1. BR-001 (Mandatory Photo): Sistem melakukan validasi saat event onStatusChange. Jika status = 'B'/'U' dan photo_blob null, maka tombol 'Submit' diubah ke status disabled (opacity 50%) dan menampilkan tooltip "Foto wajib untuk status Bad/Urgent".
-2. BR-008 (Sequential Signing): Alur tanda tangan adalah Lock-Step.
-  * Step 1: Mahasiswa tanda tangan -> Submit (Data Terkunci).
-  * Step 2: Instruktur menerima notifikasi -> Review -> Tanda tangan aktif.
-  * Step 3: Dosen akses via dashboard -> Review Final -> Tanda tangan aktif.
+2. BR-008 (Sequential Approval): Alur approval adalah Lock-Step.
+  * Step 1: Mahasiswa submit (Data Terkunci).
+  * Step 2: Instruktur menerima notifikasi -> Review -> Approve/Tolak.
+  * Step 3: Dosen akses via dashboard -> Review Final -> Approve/Tolak.
 3. Haptic Confirmation: Setiap pergantian status checklist (G/B/U) memberikan getaran mekanis singkat untuk konfirmasi tanpa perlu melihat layar secara terus-menerus.
 
 6. Status Interaksi (Interaction States)

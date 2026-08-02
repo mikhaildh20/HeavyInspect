@@ -30,7 +30,7 @@ Dokumen ini mendefinisikan hierarki roadmap pengiriman dan pemetaan tugas menyel
 |---|---|---|---|---|
 | TASK-007 | Implementasi Form P2H dengan Checklist Interaktif | DONE | TASK-003 | Form dapat menerima input SMR, checklist status (G/B/U), dan validasi BR-001 |
 | TASK-008 | Implementasi Photo Capture untuk Item Bad/Urgent | DONE | TASK-007 | Kamera dapat diakses, foto tersimpan sebagai base64, validasi photo mandatory untuk status B/U |
-| TASK-009 | Implementasi Digital Signature Pad | DONE | None | Signature pad berfungsi, menghasilkan base64 signature |
+| TASK-009 | Implementasi Digital Signature Pad | REMOVED | None | Dihapus — approval by button saja, tidak perlu tanda tangan digital |
 | TASK-010 | Implementasi Offline-First dengan Local Storage | DONE | TASK-007 | Draft tersimpan di localStorage, sync saat online |
 | TASK-011 | Implementasi SMR Validation (BR-002) | DONE | TASK-003 | Validasi SMR input >= SMR terakhir di database |
 
@@ -39,9 +39,9 @@ Dokumen ini mendefinisikan hierarki roadmap pengiriman dan pemetaan tugas menyel
 | ID | Task | Status | Dependencies | Acceptance Criteria |
 |---|---|---|---|---|
 | TASK-012 | Implementasi Dashboard untuk Leader/Supervisor | DONE | TASK-003 | Dashboard menampilkan antrian laporan yang perlu persetujuan |
-| TASK-013 | Implementasi Sequential Signing (BR-008) | DONE | TASK-012 | Leader dapat approve, Supervisor hanya bisa approve setelah Leader approve |
+| TASK-013 | Implementasi Sequential Approval (BR-008) | DONE | TASK-012 | Leader dapat approve, Supervisor hanya bisa approve setelah Leader approve |
 | TASK-014 | Implementasi Review Form dengan Detail Laporan | DONE | TASK-003 | Form review menampilkan detail laporan, tombol approve/reject |
-| TASK-015 | Implementasi Digital Signature untuk Approval | DONE | TASK-009 | Signature pad tersedia di form review untuk Leader/Supervisor |
+| TASK-015 | Implementasi Button-Only Approval | DONE | TASK-009 | Tombol approve/reject langsung tanpa tanda tangan digital |
 
 ## 6. Phase 5: Dashboard & Analytics
 

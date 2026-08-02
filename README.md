@@ -14,7 +14,7 @@ Platform inspeksi P2H (Pelaksanaan Harian) digital untuk heavy equipment di TRPA
 
 - **Operator (Mahasiswa)**: Input laporan P2H dengan foto bukti, GPS tracking, QR scanner
 - **Instruktur (Leader)**: Review dan approve laporan dengan notifikasi real-time
-- **Dosen (Supervisor)**: Final approval dengan tanda tangan digital
+- **Dosen (Supervisor)**: Final approval dengan one-click approve
 - **Admin**: Kelola user (CRUD + import/export Excel), unit, dan master sheet checklist
 
 ### Fitur Lanjutan
@@ -88,27 +88,39 @@ src/
 │   ├── (auth)/       # Login, change-password
 │   ├── (protected)/  # Dashboard, scan, P2H, reports, review
 │   ├── admin/        # Admin panel (users, units, checklist)
-│   └── api/          # API routes (CRUD, auth, export)
+│   └── api/          # API routes (CRUD, auth, export, uploads)
 ├── components/       # React components
-│   ├── admin/        # AdminSidebar, AdminNav, UserList, UnitForm
-│   ├── check/        # Checklist components
+│   ├── admin/        # AdminSidebar, UserList, UnitForm
 │   ├── checksheet/   # MaintenanceChecksheet
 │   ├── dashboard/    # MahasiswaDashboard, ApprovalDashboard, DosenDashboard
 │   ├── layout/       # AppShell, ConfirmModal
-│   ├── p2h/          # P2H form components
+│   ├── p2h/          # P2H form, ReviewForm
 │   ├── profile/      # ProfileForm, NotificationBell
 │   ├── reports/      # ReportList, ReportDetail
 │   ├── scan/         # ScannerView
 │   └── units/        # UnitsList, UnitChecklistManager
 ├── contexts/         # React contexts (NotificationContext)
 ├── db/               # Drizzle ORM schema, migrations, seed
-├── lib/              # Utilities (crypto, auth)
-└── actions/          # Server actions (p2h, notifications)
+├── lib/              # Utilities (crypto, auth, audit, upload)
+├── actions/          # Server actions (p2h, notifications)
+└── middleware.ts     # Route protection, role-based redirect
 ```
 
 ## Documentation
 
 Lihat folder `docs/` untuk dokumentasi lengkap:
-- `01_PROJECT_RULES.md` - Aturan proyek
-- `02_SRS.md` - Software Requirements Specification
+- `README.md` - Ringkasan dan hierarki dokumentasi
+- `01_PROJECT_RULES.md` - Aturan operasional proyek
+- `02_PRD.md` - Product Requirements Document
+- `03_FSD.md` - Functional Specification Document
+- `04_TSD.md` - Technical Specification Document
+- `05_ERD.md` - Entity Relationship Diagram
+- `06_API_SPEC.md` - API Specification
+- `07_UI_UX_SPEC.md` - UI/UX Specification
+- `08_TEST_PLAN.md` - Test Plan
+- `09_BACKLOG.md` - Product Backlog
+- `10_DEV_LOG.md` - Development Log
 - `11_CHANGELOG.md` - Changelog
+- `12_CODING_STANDARDS.md` - Coding Standards
+- `13_TASK_BREAKDOWN.md` - Task Breakdown
+- `HANDOFF.md` - Session Handoff

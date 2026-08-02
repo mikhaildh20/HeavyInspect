@@ -1,8 +1,8 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { db } from '@/db';
-import { p2hReports, p2hResults, units, users, checklistParameters, fluidAdditions, auditLog } from '@/db/schema';
-import { eq, and, desc } from 'drizzle-orm';
+import { p2hReports, p2hResults, units, users, checklistParameters, fluidAdditions } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 import { ReportDetail } from '@/components/reports/ReportDetail';
 import { ArrowLeft, FileText } from 'lucide-react';
 import Link from 'next/link';
@@ -28,30 +28,6 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ r
 
   const operatorList = await db.select().from(users).where(eq(users.id, report.operatorId)).limit(1);
   const operator = operatorList[0];
-
-  const leaderApproval = await db.select({ userId: auditLog.userId })
-    .from(auditLog)
-    .where(and(eq(auditLog.entityId, id), eq(auditLog.action, 'report.approve'), eq(auditLog.details, 'Approved by Leader')))
-    .orderBy(desc(auditLog.createdAt))
-    .limit(1);
-  
-  const supervisorApproval = await db.select({ userId: auditLog.userId })
-    .from(auditLog)
-    .where(and(eq(auditLog.entityId, id), eq(auditLog.action, 'report.approve'), eq(auditLog.details, 'Approved by Supervisor')))
-    .orderBy(desc(auditLog.createdAt))
-    .limit(1);
-
-  let leader = null;
-  if (leaderApproval[0]) {
-    const leaderList = await db.select().from(users).where(eq(users.id, leaderApproval[0].userId)).limit(1);
-    leader = leaderList[0] || null;
-  }
-
-  let supervisor = null;
-  if (supervisorApproval[0]) {
-    const supervisorList = await db.select().from(users).where(eq(users.id, supervisorApproval[0].userId)).limit(1);
-    supervisor = supervisorList[0] || null;
-  }
 
   const results = await db.select({
     condition: p2hResults.condition,
@@ -90,8 +66,6 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ r
           report={report} 
           unit={unit!} 
           operator={operator!} 
-          leader={leader}
-          supervisor={supervisor}
           results={results} 
           fluidAdditions={fluids}
         />

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { User, Lock, Camera, Save, Check, AlertCircle } from 'lucide-react';
+import { uploadFile } from '@/lib/upload';
 
 interface ProfileFormProps {
   user: {
@@ -60,14 +61,16 @@ export function ProfileForm({ user }: ProfileFormProps) {
         reader.readAsDataURL(file);
       });
 
+      const avatarUrl = await uploadFile(dataUri, 'avatars');
+
       const res = await fetch('/api/profile', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ avatarUrl: dataUri }),
+        body: JSON.stringify({ avatarUrl }),
       });
 
       if (res.ok) {
-        setAvatarUrl(dataUri);
+        setAvatarUrl(avatarUrl);
         setMessage({ type: 'success', text: 'Foto profil berhasil diupdate' });
       } else {
         const data = await res.json();

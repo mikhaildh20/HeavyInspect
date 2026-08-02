@@ -7,6 +7,47 @@ Aturan
 * Log wajib mencatat file aktual, keputusan teknis, dampak pada database/API/UI, dan bukti verifikasi.
 * Catat "None" jika suatu kategori tidak berlaku.
 
+[2026-08-03 10:00 WIB] — Signature Removal (v0.17.0)
+
+Status: DONE Version: 0.17.0 Owner: Lead Developer
+
+Outcome
+
+Penghapusan total mekanisme tanda tangan digital dari seluruh codebase. Approval dilakukan hanya melalui tombol approve/reject. Reject wajib menyertakan alasan yang dikirim ke notifikasi.
+
+Requirements and decisions
+
+* Schema cleanup: Menghapus kolom operator_sig, leader_sig, supervisor_sig dari tabel p2h_reports menggunakan psql langsung (drizzle-kit push memerlukan TTY interaktif).
+* p2h.ts actions: submitP2HReport tidak lagi menerima parameter signature. approveP2HReport hanya menerima reportId (tidak ada signature param).
+* P2HForm.tsx: Menghapus import SignaturePad, state signature, upload logic, dan UI signature.
+* ReviewForm.tsx: Menghapus import SignaturePad, uploadFile, state signature. canSupervisorApprove tidak lagi memeriksa leaderSig. Approve button langsung tanpa signature.
+* ReportDetail.tsx: Menghapus tampilan signature section. Approver info sekarang berasal dari audit_log queries.
+* reports/[reportId]/page.tsx: Menghapus query auditLog untuk leader/supervisor names (sudah diimplementasikan sebelumnya).
+* SignaturePad.tsx: Dihapus. File di public/uploads/signatures/ dibersihkan.
+* Documentation: Memperbarui README.md, docs/02_PRD.md, 03_FSD.md, 04_TSD.md, 05_ERD.md, 06_API_SPEC.md, 07_UI_UX_SPEC.md, 08_TEST_PLAN.md, 11_CHANGELOG.md.
+
+Files changed
+
+* src/db/schema.ts: Hapus kolom operator_sig, leader_sig, supervisor_sig dari p2h_reports
+* src/actions/p2h.ts: Hapus parameter signature dari submitP2HReport dan approveP2HReport
+* src/components/p2h/P2HForm.tsx: Hapus SignaturePad dan signature flow
+* src/components/p2h/ReviewForm.tsx: Hapus SignaturePad, button-only approval
+* src/components/reports/ReportDetail.tsx: Hapus signature display section
+* src/app/reports/[reportId]/page.tsx: Hapus auditLog query
+* src/components/p2h/SignaturePad.tsx: Dihapus
+
+Database changes
+
+* DROP COLUMN operator_sig FROM p2h_reports;
+* DROP COLUMN leader_sig FROM p2h_reports;
+* DROP COLUMN supervisor_sig FROM p2h_reports;
+
+Verification
+
+* tsc --noEmit: Clean (0 errors)
+* npm run build: Success (27 routes compiled)
+* grep signature/sig/tanda.tangan in src/: 0 matches
+
 [2026-07-31 14:00 WIB] — 15 Adjustments Batch (v0.15.0)
 
 Status: DONE Version: 0.15.0 Owner: Lead Developer

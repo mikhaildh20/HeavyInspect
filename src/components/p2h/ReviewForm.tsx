@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { SignaturePad } from './SignaturePad';
 import { approveP2HReport, rejectP2HReport } from '@/actions/p2h';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, XCircle, Clock, AlertTriangle, MapPin, Droplets, X, Gauge, Hash, Pen } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, AlertTriangle, MapPin, Droplets, X, Gauge, Hash } from 'lucide-react';
 
 const CONDITION_LABELS: Record<string, string> = { G: 'Baik', B: 'Buruk', U: 'Ganti' };
 const CONDITION_COLORS: Record<string, string> = { G: 'bg-green-600', B: 'bg-yellow-500', U: 'bg-red-600' };
@@ -27,7 +26,6 @@ interface ReviewFormProps {
 
 export function ReviewForm({ report, unit, operator, results, fluidAdditions = [], role }: ReviewFormProps) {
   const router = useRouter();
-  const [signature, setSignature] = useState<string | null>(null);
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,17 +33,16 @@ export function ReviewForm({ report, unit, operator, results, fluidAdditions = [
   const [previewPhoto, setPreviewPhoto] = useState<{ src: string; alt: string } | null>(null);
 
   const canLeaderApprove = role === 'leader' && report.status === 'Submitted';
-  const canSupervisorApprove = role === 'supervisor' && report.status === 'PendingSupervisor' && report.leaderSig;
+  const canSupervisorApprove = role === 'supervisor' && report.status === 'PendingSupervisor';
   const canApprove = canLeaderApprove || canSupervisorApprove;
   
   const canReject = (role === 'leader' && report.status === 'Submitted') ||
                     (role === 'supervisor' && report.status === 'PendingSupervisor');
 
   const handleApprove = async () => {
-    if (!signature) return;
     setIsSubmitting(true);
     try {
-      await approveP2HReport(report.id, signature);
+      await approveP2HReport(report.id);
       setModal({ type: 'success', message: 'Laporan berhasil disetujui!' });
     } catch (e: any) {
       setModal({ type: 'error', message: e.message || 'Terjadi kesalahan' });
@@ -182,83 +179,22 @@ export function ReviewForm({ report, unit, operator, results, fluidAdditions = [
           </div>
         )}
 
-        <div className="mt-4 pt-4 border-t border-gray-700">
-          <p className="text-sm font-medium text-gray-300 mb-3 flex items-center gap-2">
-            <Pen size={14} /> Status Tanda Tangan
-          </p>
-          <div className="grid grid-cols-3 gap-2 text-xs">
-            <div className={`p-2 rounded ${report.operatorSig ? 'bg-green-900/30 border border-green-700' : 'bg-gray-700'}`}>
-              <p className="text-gray-400">Mahasiswa</p>
-              <p className={report.operatorSig ? 'text-green-400' : 'text-gray-500'}>
-                {report.operatorSig ? '✓ Signed' : 'Belum'}
-              </p>
+        {report.gpsLatitude && report.gpsLongitude && (
+          <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
+            <div className="flex items-center gap-2 text-gray-300 mb-2">
+              <MapPin size={16} className="text-green-400" />
+              <p className="text-sm font-medium">Lokasi GPS</p>
             </div>
-            <div className={`p-2 rounded ${report.leaderSig ? 'bg-green-900/30 border border-green-700' : 'bg-gray-700'}`}>
-              <p className="text-gray-400">Instruktur</p>
-              <p className={report.leaderSig ? 'text-green-400' : 'text-gray-500'}>
-                {report.leaderSig ? '✓ Signed' : 'Belum'}
-              </p>
-            </div>
-            <div className={`p-2 rounded ${report.supervisorSig ? 'bg-green-900/30 border border-green-700' : 'bg-gray-700'}`}>
-              <p className="text-gray-400">Dosen</p>
-              <p className={report.supervisorSig ? 'text-green-400' : 'text-gray-500'}>
-                {report.supervisorSig ? '✓ Signed' : 'Belum'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {(report.operatorSig || report.leaderSig || report.supervisorSig) && (
-          <div className="mt-4 pt-4 border-t border-gray-700">
-            <p className="text-sm font-medium text-gray-300 mb-3">Tanda Tangan</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[
-                { data: report.operatorSig, name: operator?.fullName || '-', role: 'Mahasiswa' },
-                { data: report.leaderSig, name: '-', role: 'Instruktur' },
-                { data: report.supervisorSig, name: '-', role: 'Dosen' },
-              ].map((sig, idx) => (
-                <div
-                  key={idx}
-                  className={`p-4 rounded-lg text-center ${
-                    sig.data ? 'bg-green-900/20 border border-green-700/50' : 'bg-gray-700/50 border border-gray-600'
-                  }`}
-                >
-                  <p className="text-xs text-gray-400 mb-2">{sig.role}</p>
-                  {sig.data ? (
-                    <img
-                      src={sig.data}
-                      alt={`TTD ${sig.role}`}
-                      className="h-20 mx-auto object-contain bg-white/5 rounded-lg p-1"
-                    />
-                  ) : (
-                    <div className="h-20 flex items-center justify-center text-gray-500 text-sm">
-                      Belum ditandatangani
-                    </div>
-                  )}
-                  <p className={`text-sm font-medium mt-2 ${sig.data ? 'text-green-400' : 'text-gray-500'}`}>
-                    {sig.name}
-                  </p>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-2 text-xs text-gray-400">
+              <p>Lat: {report.gpsLatitude.toFixed(6)}</p>
+              <p>Lng: {report.gpsLongitude.toFixed(6)}</p>
+              {report.gpsAccuracy && <p>Akurasi: ±{report.gpsAccuracy.toFixed(0)}m</p>}
+              {report.gpsTimestamp && <p>Waktu: {formatDateTime(report.gpsTimestamp)}</p>}
             </div>
           </div>
         )}
-      </div>
 
-      {report.gpsLatitude && report.gpsLongitude && (
-        <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
-          <div className="flex items-center gap-2 text-gray-300 mb-2">
-            <MapPin size={16} className="text-green-400" />
-            <p className="text-sm font-medium">Lokasi GPS</p>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-xs text-gray-400">
-            <p>Lat: {report.gpsLatitude.toFixed(6)}</p>
-            <p>Lng: {report.gpsLongitude.toFixed(6)}</p>
-            {report.gpsAccuracy && <p>Akurasi: ±{report.gpsAccuracy.toFixed(0)}m</p>}
-            {report.gpsTimestamp && <p>Waktu: {formatDateTime(report.gpsTimestamp)}</p>}
-          </div>
         </div>
-      )}
 
       {fluidAdditions.length > 0 && (
         <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
@@ -322,12 +258,7 @@ export function ReviewForm({ report, unit, operator, results, fluidAdditions = [
 
       {canApprove && (
         <div className="bg-gray-800 p-6 rounded-xl border border-gray-700 mt-8">
-          <label className="block text-lg font-bold text-white mb-4">
-            Tanda Tangan {role === 'leader' ? 'Instruktur' : 'Dosen'}
-          </label>
-          <SignaturePad onSign={setSignature} />
-          
-          <div className="flex gap-4 mt-6">
+          <div className="flex gap-4">
             {canReject && (
               <button 
                 onClick={() => setShowRejectModal(true)}
@@ -340,8 +271,8 @@ export function ReviewForm({ report, unit, operator, results, fluidAdditions = [
             )}
             <button 
               onClick={handleApprove}
-              disabled={!signature || isSubmitting}
-              className={`flex-1 btn-glove text-lg ${!signature || isSubmitting ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-success text-white hover:bg-green-600'}`}
+              disabled={isSubmitting}
+              className={`flex-1 btn-glove text-lg ${isSubmitting ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-success text-white hover:bg-green-600'}`}
             >
               <CheckCircle size={20} className="mr-2" />
               {isSubmitting ? 'Memproses...' : 'Setujui'}
@@ -359,7 +290,7 @@ export function ReviewForm({ report, unit, operator, results, fluidAdditions = [
             {role === 'leader' && report.status === 'PendingSupervisor' && 
               'Laporan sedang menunggu persetujuan Dosen.'}
             {!canApprove && report.status !== 'Submitted' && report.status !== 'PendingSupervisor' &&
-              'Laporan ini tidak memerlukan tanda tangan Anda saat ini.'}
+              'Laporan ini tidak memerlukan persetujuan Anda saat ini.'}
           </p>
         </div>
       )}

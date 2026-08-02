@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, Clock, XCircle, User, Calendar, FileText, AlertTriangle, X, MapPin, Droplets, Pen, Hash, Gauge } from 'lucide-react';
+import { CheckCircle, Clock, XCircle, User, Calendar, FileText, AlertTriangle, X, MapPin, Droplets, Hash, Gauge } from 'lucide-react';
 
 const CONDITION_LABELS: Record<string, string> = { G: 'Baik', B: 'Buruk', U: 'Ganti' };
 const CONDITION_COLORS: Record<string, string> = { G: 'bg-green-600', B: 'bg-yellow-500', U: 'bg-red-600' };
@@ -12,12 +12,6 @@ const ACTION_LABELS: Record<string, string> = {
   '3': 'Tindakan pada PS Berikutnya',
   '4': 'Tindakan pada Jadwal Backlog',
 };
-
-interface Signature {
-  data: string | null;
-  name: string;
-  role: string;
-}
 
 interface FluidAddition {
   fluidType: string;
@@ -44,9 +38,6 @@ interface ReportDetailProps {
     woJono: string | null;
     zone: string | null;
     inspectionStart: string | null;
-    operatorSig: string | null;
-    leaderSig: string | null;
-    supervisorSig: string | null;
     rejectionReason: string | null;
     gpsLatitude: number | null;
     gpsLongitude: number | null;
@@ -62,17 +53,11 @@ interface ReportDetailProps {
   operator: {
     fullName: string;
   };
-  leader: {
-    fullName: string;
-  } | null;
-  supervisor: {
-    fullName: string;
-  } | null;
   results: ReportResult[];
   fluidAdditions: FluidAddition[];
 }
 
-export function ReportDetail({ report, unit, operator, leader, supervisor, results, fluidAdditions }: ReportDetailProps) {
+export function ReportDetail({ report, unit, operator, results, fluidAdditions }: ReportDetailProps) {
   const [previewPhoto, setPreviewPhoto] = useState<{ src: string; alt: string } | null>(null);
 
   const getStatusBadge = () => {
@@ -113,12 +98,6 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
         );
     }
   };
-
-  const signatures: Signature[] = [
-    { data: report.operatorSig, name: operator?.fullName || '-', role: 'Mahasiswa' },
-    { data: report.leaderSig, name: leader?.fullName || '-', role: 'Instruktur' },
-    { data: report.supervisorSig, name: supervisor?.fullName || '-', role: 'Dosen' },
-  ];
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('id-ID', {
@@ -232,39 +211,6 @@ export function ReportDetail({ report, unit, operator, leader, supervisor, resul
         <div className="mt-4 pt-4 border-t border-gray-700 text-xs text-gray-500">
           <p>Dibuat: {formatDateTime(report.createdAt)}</p>
           <p>Diperbarui: {formatDateTime(report.updatedAt)}</p>
-        </div>
-      </div>
-
-      <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-        <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
-          <Pen className="text-primary" size={20} />
-          Tanda Tangan
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {signatures.map((sig, idx) => (
-            <div
-              key={idx}
-              className={`p-4 rounded-lg text-center ${
-                sig.data ? 'bg-green-900/20 border border-green-700/50' : 'bg-gray-700/50 border border-gray-600'
-              }`}
-            >
-              <p className="text-xs text-gray-400 mb-2">{sig.role}</p>
-              {sig.data ? (
-                <img
-                  src={sig.data}
-                  alt={`TTD ${sig.role}`}
-                  className="h-20 mx-auto object-contain bg-white/5 rounded-lg p-1"
-                />
-              ) : (
-                <div className="h-20 flex items-center justify-center text-gray-500 text-sm">
-                  Belum ditandatangani
-                </div>
-              )}
-              <p className={`text-sm font-medium mt-2 ${sig.data ? 'text-green-400' : 'text-gray-500'}`}>
-                {sig.name}
-              </p>
-            </div>
-          ))}
         </div>
       </div>
 

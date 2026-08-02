@@ -144,7 +144,7 @@ BR-008	Persetujuan Berjenjang: dosen_sig hanya diterima jika record memiliki sta
 
 * Idempotency: Klien wajib menyertakan X-Idempotency-Key pada semua request mutasi (POST/PATCH). Server akan menyimpan kunci selama 24 jam untuk mencegah duplikasi data akibat network retry.
 * Audit Trail: Sesuai 01_PROJECT_RULES.md, setiap mutasi status wajib mencatat state before dan after.
-* Signature Security: Field signature (*_sig) harus divalidasi sebagai format gambar Base64 yang valid. Sistem tidak menyimpan file fisik, melainkan string representatif untuk verifikasi integritas laporan.
+* Approval Security: Setiap aksi approve/reject harus divalidasi melalui role-based access control. Metadata approval disimpan di audit_log untuk verifikasi integritas laporan.
 * Rate Limiting: Maksimal 100 request/menit per User ID untuk mencegah abuse pada endpoint scan dan submission.
 
 10. Definisi Endpoint: Bulk Import Users

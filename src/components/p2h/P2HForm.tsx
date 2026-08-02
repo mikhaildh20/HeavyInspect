@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Camera, AlertTriangle, Trash2, CheckCircle, XCircle, WifiOff } from 'lucide-react';
-import { SignaturePad } from './SignaturePad';
 import { PhotoCapture } from './PhotoCapture';
 import { useRouter } from 'next/navigation';
 import { submitP2HReport } from '@/actions/p2h';
 import { useGeolocation } from '@/hooks/useGeolocation';
+import { uploadFile } from '@/lib/upload';
 
 type ChecklistItem = {
   id: number;
@@ -57,7 +57,6 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
   const [inspectionTime, setInspectionTime] = useState('');
   const [results, setResults] = useState<Record<number, { condition: string; note: string; priority: number | null; photo: string | null }>>({});
   const [fluids, setFluids] = useState<{ type: string; quantity: string }[]>([{ type: '', quantity: '' }]);
-  const [signature, setSignature] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(false);
   const [modal, setModal] = useState<{ type: 'success' | 'error' | 'offline'; message: string } | null>(null);
   const { latitude, longitude, accuracy, error: gpsError, loading: gpsLoading, timestamp: gpsTimestamp, captureLocation } = useGeolocation();
@@ -125,8 +124,13 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
     }));
   }, []);
 
-  const handlePhotoCapture = useCallback((paramId: number, photoBase64: string) => {
-    updateResult(paramId, 'photo', photoBase64);
+  const handlePhotoCapture = useCallback(async (paramId: number, photoBase64: string) => {
+    try {
+      const url = await uploadFile(photoBase64, 'photos');
+      updateResult(paramId, 'photo', url);
+    } catch (err) {
+      console.error('Upload failed:', err);
+    }
   }, [updateResult]);
 
   const handlePhotoDelete = useCallback((paramId: number) => {
@@ -135,7 +139,7 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
 
   const isSubmitDisabled = () => {
     const smrNum = smr === '' ? NaN : Number(smr);
-    if (isNaN(smrNum) || smrNum < 0 || !signature) return true;
+    if (isNaN(smrNum) || smrNum < 0) return true;
     for (const item of checklist) {
       const state = results[item.id];
       if (!state || !state.condition) return true;
@@ -152,8 +156,6 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
       setModal({ type: 'offline', message: 'Data disimpan lokal karena offline. Sistem akan sinkronisasi saat koneksi pulih.' });
       return;
     }
-
-    if (!signature) return;
 
     const checklistData: Record<string, { status: string; photo?: string | null; notes?: string | null; actionCode?: string | null }> = {};
     for (const item of checklist) {
@@ -179,7 +181,6 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
       inspectionStart: inspectionTime,
       checklist: checklistData,
       fluids: validFluids,
-      signature,
       gpsLatitude: latitude,
       gpsLongitude: longitude,
       gpsAccuracy: accuracy,
@@ -485,11 +486,6 @@ export function P2HForm({ unitId, modelName, checklist, lastSmr, serialNumber: d
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-        <label className="block text-lg font-bold text-white mb-4">Tanda Tangan Mekanik</label>
-        <SignaturePad onSign={setSignature} />
       </div>
 
       <button
