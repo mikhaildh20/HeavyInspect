@@ -21,6 +21,10 @@ export function PhotoCapture({ onCapture, onCancel, compact }: PhotoCaptureProps
   const startCamera = async () => {
     try {
       setError(null);
+      setIsOpen(true);
+      
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: 'environment',
@@ -32,7 +36,6 @@ export function PhotoCapture({ onCapture, onCancel, compact }: PhotoCaptureProps
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
-      setIsOpen(true);
     } catch (err) {
       console.error('Camera error:', err);
       setError('Gagal mengakses kamera. Pastikan izin kamera telah diberikan.');
@@ -94,10 +97,9 @@ export function PhotoCapture({ onCapture, onCancel, compact }: PhotoCaptureProps
     onCancel?.();
   };
 
-  // Auto-start camera when component mounts
-  useState(() => {
+  useEffect(() => {
     startCamera();
-  });
+  }, []);
 
   return (
     <>
