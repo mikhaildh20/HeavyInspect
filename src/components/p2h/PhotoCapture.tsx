@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Camera, X, Check, RotateCcw } from 'lucide-react';
 import { compressImage, getFileSizeKB } from '@/lib/imageCompression';
 
